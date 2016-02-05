@@ -25,7 +25,7 @@ public class Customer
     
     public void addToCart (Inventory Item)
     {
-        theCart.addToCart(Item);
+        theCart.addToCart(Item); //aah
     }
     
     public void removeFromCart (int cartItemID)
