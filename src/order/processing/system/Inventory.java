@@ -11,7 +11,6 @@ public class Inventory
     //getters
     public int getID()
     {
-        System.out.println("Hello");
         return InventoryID;
     }
     
