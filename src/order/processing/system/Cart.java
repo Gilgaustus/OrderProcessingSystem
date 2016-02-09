@@ -22,14 +22,14 @@ public class Cart
     }
     
     //these should really be in a control 
-    public synchronized void addToCart (Inventory inv)
+    public void addToCart (Inventory inv)
     {       Thread.yield();
            //System.out.println("****************************************************************");
            System.out.println(Thread.currentThread().getName() + " adding Item " + inv.getName());
           // Thread.currentThread().wait();
         int index;
         int quantity = inv.getQuantity();
-        if(ILC.getIL().get(inv.InventoryID).Quantity != 0)
+        if(quantity != 0)
         {
             cartContents.add(inv);
             for(int i = 0; i < ILC.getIL().size(); i++)
@@ -38,7 +38,7 @@ public class Cart
                 {
                     quantity = inv.getQuantity()-1;
                     index = i;
-                   
+                    System.out.println(quantity);
                     ILC.setItemQuantity(index, quantity);
                     subtotal = subtotal + ILC.getItemPrice(inv.getID());
                 

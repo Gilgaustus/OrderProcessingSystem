@@ -142,7 +142,7 @@ public class Customer extends Thread
     @Override
     public void run() {
    
-//both threads will select an item with 1 stock, 1 will always win out.
+    //both threads will select an item with 1 stock, 1 will always win out.
     try{
         
               this.theCart.addToCart(ILC.getItem(2));
@@ -172,7 +172,7 @@ public class Customer extends Thread
          
     }catch(IndexOutOfBoundsException e2)
     {
-        System.out.println(this.getName() + "found nothing to add");
+        System.out.println(this.getName() + " found nothing to add");
     }
     }
 
