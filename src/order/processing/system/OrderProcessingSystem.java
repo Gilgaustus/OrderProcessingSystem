@@ -15,14 +15,34 @@ public class OrderProcessingSystem {
      * @param args the command line arguments
      */
   
-    public static void  main(String[] args) {
+    public static void  main(String[] args)  {
         // TODO code application logic here
-     InteractionCntl ILCntl = new InteractionCntl();
-     ILCntl.welcomeProtocol();
-     ILCntl.initCustomer();
+       InteractionCntl ILCntl = new InteractionCntl(); 
+       
+       ILCntl.getILC().initInvList();
+       ILCntl.getILC().displayInvList();
+       
+        //Customer cust1 = new Customer(ILCntl.getILC());
+        //Customer cust2 = new Customer(ILCntl.getILC());
+        
+       // cust1.setFirstName("Ladies");
+        //cust2.setFirstName("Gentlman");
+       
+       Thread Thread1 = new Customer(ILCntl.getILC());
+       Thread Thread2 = new Customer(ILCntl.getILC());
+     
+       
+        System.out.println("The Order Processing System Presents...");
+        System.out.println("****************************************");
+        System.out.println("*********THREAD***HANDLING**************");
+        System.out.println("****************************************");
+        
+        
+       Thread1.start();
+       Thread2.start();
+       Thread.yield();
       
+       }
     
-    
-    }
     
 }

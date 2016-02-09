@@ -6,6 +6,8 @@
 package order.processing.system;
 
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class Cart 
 {
@@ -20,11 +22,14 @@ public class Cart
     }
     
     //these should really be in a control 
-    public void addToCart (Inventory inv)
-    {
+    public synchronized void addToCart (Inventory inv)
+    {       Thread.yield();
+           //System.out.println("****************************************************************");
+           System.out.println(Thread.currentThread().getName() + " adding Item " + inv.getName());
+          // Thread.currentThread().wait();
         int index;
         int quantity = inv.getQuantity();
-        if(quantity != 0)
+        if(ILC.getIL().get(inv.InventoryID).Quantity != 0)
         {
             cartContents.add(inv);
             for(int i = 0; i < ILC.getIL().size(); i++)
@@ -40,10 +45,11 @@ public class Cart
                 }
             }
         }
-        else
-        {
-            System.out.println("Inventory Empty Select another Item");
-        }
+         
+         
+         System.out.println(Thread.currentThread().getName() + " added item " + inv.getName());
+        //System.out.println("****************************************************************");
+
     }
     
     public void removeFromCart (int cartItemID)

@@ -5,17 +5,20 @@
  */
 package order.processing.system;
 
+import static java.lang.System.in;
 import java.util.Scanner;
 
 /**
  *
  * @author esm5175
  */
-public class InteractionCntl
-{
+public class InteractionCntl extends Thread
+{    
+
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
-    OrderListCntl OLC = new OrderListCntl(CLC, ILC);
+    InventoryListCntl ILC2 = new InventoryListCntl(CLC);
+    OrderListCntl OLC = new OrderListCntl(CLC, ILC2);
     Scanner in = new Scanner(System.in);
    
 
@@ -23,14 +26,14 @@ public class InteractionCntl
     {
         CLC.testCL();
     }
- 
     public void welcomeProtocol()
     {
         
         this.initCustomer();
         
         //Initializes Inventory
-        ILC.initInvList();
+        ILC2.initInvList();
+      
         
         System.out.println("Welcome to the Order Proc System!");
         System.out.println("You are currently logged in a customer: " + CLC.getCustomerFirstName(0) + " " + CLC.getCustomerLastName(0));
@@ -52,12 +55,12 @@ public class InteractionCntl
     {
         //we want scanner to clear after clearing menu so each is declared in a method
         System.out.println("Main Menu");
-        System.out.println("**************************************************************************************************");
+       // System.out.println("**************************************************************************************************");
         System.out.println("Select the number in the bracket () to navigate to its respective option");
         System.out.println(" (1) View Inventory ");
         System.out.println(" (2) View Cart ");
         System.out.println(" (3) Checkout ");
-        System.out.println("**************************************************************************************************");
+     //   System.out.println("**************************************************************************************************");
         System.out.println("Enter Number:  ");
         int selection = in.nextInt();
         return selection;
@@ -70,22 +73,28 @@ public class InteractionCntl
         
         if(selection == 1)
         {
-          System.out.println("Here is a list of our Inventory: ");
-          System.out.println("**************************************************************************************************************");
-          ILC.displayInvList();
-          System.out.println("**************************************************************************************************************");
             
+          Thread t1 = new Thread(ILC2);
+          Thread t2 = new Thread(ILC2);
+          
+          System.out.println("I am Thread 1: "+t1.getName());
+          t1.start();
+          t2.start();
+          
           System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
+          
           int invId = in.nextInt();
           //clears scanner
           in = new Scanner (System.in);
             
-          for(int i = 0; i < ILC.getIL().size(); i++)
+          for(int i = 0; i < ILC2.getIL().size(); i++)
           {   
-              if(invId == ILC.getItemID(i))
-              CLC.getCustomerCart(0).addToCart(ILC.getItem(i));
+              if(invId == ILC2.getItemID(i))
+                  
+              CLC.getCustomerCart(0).addToCart(ILC2.getItem(i));
           }
-            
+         
+          
           System.out.println("Continue Shopping? (Y/N)"); 
           String option = in.nextLine();
             
@@ -112,9 +121,9 @@ public class InteractionCntl
         {
             int decision;
             System.out.println("Here is a list of your cart: ");
-            System.out.println("**************************************************************************************************************");
+            //System.out.println("**************************************************************************************************************");
             CLC.displayCartList();
-            System.out.println("**************************************************************************************************************");
+          //  System.out.println("**************************************************************************************************************");
           
             //decide if you want to remove an item, increase quantity, or go back to the menu
             System.out.println("Select the number in the bracket () to activate its respective option");
@@ -128,7 +137,7 @@ public class InteractionCntl
                 System.out.println("Select the item you want to increase from the cart list above: ");
                 int addItem = in.nextInt();
                 if (addItem >= 0 && addItem <= CLC.getCustomerCart(0).getCartList().size())
-                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
+                    CLC.getCustomerCart(0).addToCart(ILC2.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
                 else
                 {
                     System.out.println("Invalid input");
@@ -163,6 +172,9 @@ public class InteractionCntl
             int decision;
             System.out.println("Here is your current order");
             System.out.println("*****************************************");
+            
+            
+            //may be obselete after threads
             CLC.displayCartList();
             System.out.println(" Shipping Address: " + CLC.getCustomerShipingAddress(0));
             System.out.println(" Billing Address: " + CLC.getCustomerBillingAddress(0));
@@ -200,7 +212,7 @@ public class InteractionCntl
             
             if (decision == 4)
             {
-            OLC.getOrderList().add(OLC.createOrder(CLC, ILC, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
+            OLC.getOrderList().add(OLC.createOrder(CLC, ILC2, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
             OLC.process();
             CLC.getCustomerList().get(0).getCart().cartContents.clear();
             System.out.println(OLC.getOrderList().get(0).transactionID);
@@ -211,6 +223,10 @@ public class InteractionCntl
     
     }
 
+    public InventoryListCntl getILC()
+    {
+        return ILC2;
+    }
     
      
     
