@@ -171,9 +171,9 @@ public class Customer extends Thread
 
          
     }catch(IndexOutOfBoundsException e2)
-    {
-        System.out.println(this.getName() + " found nothing to add");
-    }
+        {
+            System.out.println(this.getName() + " found nothing to add");
+        }
     }
 
     

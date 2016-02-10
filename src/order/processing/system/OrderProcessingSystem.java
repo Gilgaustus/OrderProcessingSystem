@@ -5,6 +5,9 @@
  */
 package order.processing.system;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Gilberto
@@ -39,6 +42,11 @@ public class OrderProcessingSystem {
         
         
        Thread1.start();
+        try {
+            Thread1.join(2000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(OrderProcessingSystem.class.getName()).log(Level.SEVERE, null, ex);
+        }
        Thread2.start();
        Thread.yield();
       

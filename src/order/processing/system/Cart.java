@@ -23,7 +23,7 @@ public class Cart
     
     //these should really be in a control 
     public void addToCart (Inventory inv)
-    {       Thread.yield();
+    {      
            //System.out.println("****************************************************************");
            System.out.println(Thread.currentThread().getName() + " adding Item " + inv.getName());
           // Thread.currentThread().wait();
@@ -38,7 +38,6 @@ public class Cart
                 {
                     quantity = inv.getQuantity()-1;
                     index = i;
-                    System.out.println(quantity);
                     ILC.setItemQuantity(index, quantity);
                     subtotal = subtotal + ILC.getItemPrice(inv.getID());
                 
