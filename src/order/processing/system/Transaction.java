@@ -10,6 +10,4 @@ public abstract class Transaction
     int transactionID;
     int customerID;
     
-    abstract void process();
-    
 }

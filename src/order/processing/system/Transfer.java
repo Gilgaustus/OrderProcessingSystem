@@ -2,44 +2,56 @@ package order.processing.system;
 
 public class Transfer extends Transaction
 {
-
+    Inventory invToReturn;
+    Inventory invToGet;
     
-    CustomerListCntl parentCLC;
-    InventoryListCntl parentILC;
-    OrderListCntl parentOLC;
-    //for now cust is just hard-coded to 0
-    Order theOrder;
-    double totalPrice = 0;
-    int transferID = 0;
+    int transferID;
     int transferCustomerID;
+    int referenceOrderID;
     
-    public Transfer(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC)
+    public Transfer(Inventory newInvToReturn, Inventory newInvToGet)
     {
-        parentCLC = theCLC;
-        parentILC = theILC;
-        parentOLC = theOLC;
+        invToReturn = newInvToReturn;
+        invToGet = newInvToGet;
     }
     
-    public void setTransfer()
+    public void setTransferID(int newTransferID)
     {
-        
+        transferID = newTransferID;
     }
     
-    
-    
-    public void displayCartList()
+    public void setTransferCustomerID(int newCustomerID)
     {
-        for(int i = 0; i < InventoryItemOrder.getCartList().size(); i++)
-        {    
-            System.out.println(i + "." + " ID: " + InventoryItemOrder.getCartList().get(i).getID() + " Name: "+ InventoryItemOrder.getCartList().get(i).getName() + " Desc: " + InventoryItemOrder.getCartList().get(i).getDescription() + "  Price: " + InventoryItemOrder.getCartList().get(i).getPrice());
-        }
+        transferCustomerID = newCustomerID;
     }
     
-    @Override
-    void process() 
+    public void setReferenceOrderID(int theOrderID)
     {
-        
+        referenceOrderID = theOrderID;
     }
-
-
+    
+    public Inventory getItemReturned()
+    {
+        return invToReturn;
+    }
+    
+    public Inventory getItemToGet()
+    {
+        return invToGet;
+    }
+    
+    public int getTransferID()
+    {
+        return transferID;
+    }
+    
+    public int getTransferCustomerID()
+    {
+        return transferCustomerID;
+    }
+    
+    public int getReferencedOrderID()
+    {
+        return referenceOrderID;
+    }
 }

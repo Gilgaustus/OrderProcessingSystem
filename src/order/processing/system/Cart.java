@@ -13,7 +13,6 @@ public class Cart
 {
     InventoryListCntl ILC;
     ArrayList<Inventory> cartContents = new ArrayList<>();
-    int size = 0;
     double subtotal = 0;
     
     public Cart (InventoryListCntl inputILC)
@@ -29,7 +28,7 @@ public class Cart
           // Thread.currentThread().wait();
         int index;
         int quantity = inv.getQuantity();
-        if(ILC.getIL().get(inv.InventoryID).Quantity != 0)
+        if(quantity != 0)
         {
             cartContents.add(inv);
             for(int i = 0; i < ILC.getIL().size(); i++)

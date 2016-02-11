@@ -42,11 +42,6 @@ public class Customer extends Thread
         theCart.removeFromCart(cartItemID);
     }
     
-    public void addOrder (Order newOrder)
-    {
-        ordersPlaced.add(newOrder);
-    }
-    
     //getters
     public int getCustomerID()
     {

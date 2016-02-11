@@ -47,6 +47,7 @@ public class InteractionCntl extends Thread
         System.out.println(" (1) View Inventory ");
         System.out.println(" (2) View Cart ");
         System.out.println(" (3) Checkout ");
+        System.out.println(" (4) Transfer ");
      //   System.out.println("**************************************************************************************************");
         System.out.println("Enter Number:  ");
         int selection = in.nextInt();
@@ -196,13 +197,37 @@ public class InteractionCntl extends Thread
             
             if (decision == 4)
             {
-            OLC.getOrderList().add(OLC.createOrder(CLC, ILC2, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
-            OLC.process();
-            CLC.getCustomerList().get(0).getCart().cartContents.clear();
-            System.out.println(OLC.getOrderList().get(0).transactionID);
-            System.out.println("Order placed!");
-            this.displaySelection(this.mainMenu());
+                OLC.getOrderList().add(OLC.createOrder(CLC, ILC2, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
+                OLC.process();
+                CLC.getCustomerList().get(0).getCart().cartContents.clear();
+                System.out.println(OLC.getOrderList().get(0).transactionID);
+                System.out.println("Order placed!");
+                this.displaySelection(this.mainMenu());
             }
+        }
+        
+        if (selection == 4)
+        {
+            OLC.showCustomerOrder(0);
+            System.out.println("From which order do you want to transfer an item from?");
+            in = new Scanner (System.in);
+            int orderNumber = in.nextInt();
+            
+            System.out.println("Which item do you want to return? (Choose the position of the item within the order, not the ID)");
+            in = new Scanner (System.in);
+            int itemToReturn = in.nextInt();
+            
+            System.out.println("Now choose which item would you like in exchange.");
+            System.out.println("Here is a list of our Inventory: ");
+            System.out.println("**************************************************************************************************************");
+            ILC2.displayInvList();
+            System.out.println("**************************************************************************************************************");
+            in = new Scanner (System.in);
+            int exchangeItem = in.nextInt();
+            
+            TLC.createTransfer(orderNumber, itemToReturn, exchangeItem);
+            System.out.println("Transfer placed!");
+            this.displaySelection(this.mainMenu());
         }
     
     }

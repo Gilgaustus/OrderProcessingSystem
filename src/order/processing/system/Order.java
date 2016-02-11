@@ -1,7 +1,5 @@
 package order.processing.system;
 
-import java.util.ArrayList;
-
 public class Order extends Transaction
 {
     CustomerListCntl parentCLC;
@@ -24,9 +22,14 @@ public class Order extends Transaction
         billingAddress = parentCLC.getCustomerBillingAddress(0);
     }
     
-    public void setOrderID(int newID)
+    public void setOrderID(int newOrderID)
     {
-        orderID = newID;
+        orderID = newOrderID;
+    }
+    
+    public void setCustomerID(int newCustomerID)
+    {
+        orderCustomerID = newCustomerID;
     }
     
     public void setShippingPrice(double input)
@@ -49,6 +52,11 @@ public class Order extends Transaction
    public int getOrderID()
    {
        return orderID;
+   }
+   
+   public int getCustomerID()
+   {
+       return orderCustomerID;
    }
    
    public String getBillingAddress()
@@ -85,7 +93,6 @@ public class Order extends Transaction
         }
     }
     
-    @Override
     void process() 
     {
         totalPrice = totalPrice + InventoryItemOrder.subtotal;

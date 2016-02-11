@@ -28,11 +28,6 @@ public class CustomerListCntl
         this.getCustomerList().remove(index);
     }
     
-    public void addOrder(Order newOrder, int index)
-    {
-        this.getCustomerList().get(index).addOrder(newOrder);
-    }
-    
     //getters
     
     public ArrayList<Customer> getCustomerList()

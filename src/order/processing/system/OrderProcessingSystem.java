@@ -21,7 +21,8 @@ public class OrderProcessingSystem {
     public static void  main(String[] args)  {
         // TODO code application logic here
        InteractionCntl ILCntl = new InteractionCntl(); 
-       
+       ILCntl.welcomeProtocol();
+       /*
        ILCntl.getILC().initInvList();
        ILCntl.getILC().displayInvList();
        
@@ -54,7 +55,7 @@ public class OrderProcessingSystem {
        
         //comment this in to print the order processing system
        //ILCntl.welcomeProtocol();
-      
+       */
        }
     
     
