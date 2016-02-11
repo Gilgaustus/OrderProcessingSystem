@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Inventory
+public class Inventory implements Runnable
 {
     protected int InventoryID;
     protected String itemName;
@@ -61,5 +61,10 @@ public class Inventory
     public void setQuantity(int quantity)
     {
         Quantity = quantity;
+    }
+
+    @Override
+    public void run() {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

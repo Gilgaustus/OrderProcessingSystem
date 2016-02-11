@@ -30,6 +30,8 @@ public class OrderProcessingSystem {
         
        // cust1.setFirstName("Ladies");
         //cust2.setFirstName("Gentlman");
+      
+       
        
        Thread Thread1 = new Customer(ILCntl.getILC());
        Thread Thread2 = new Customer(ILCntl.getILC());
@@ -43,12 +45,15 @@ public class OrderProcessingSystem {
         
        Thread1.start();
         try {
-            Thread1.join(2000);
+            Thread1.join(4000);
         } catch (InterruptedException ex) {
             Logger.getLogger(OrderProcessingSystem.class.getName()).log(Level.SEVERE, null, ex);
         }
        Thread2.start();
        Thread.yield();
+       
+        //comment this in to print the order processing system
+       //ILCntl.welcomeProtocol();
       
        }
     

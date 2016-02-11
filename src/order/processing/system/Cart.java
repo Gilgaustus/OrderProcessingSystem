@@ -22,14 +22,14 @@ public class Cart
     }
     
     //these should really be in a control 
-    public void addToCart (Inventory inv)
-    {      
+    public synchronized void addToCart (Inventory inv)
+    {       
            //System.out.println("****************************************************************");
            System.out.println(Thread.currentThread().getName() + " adding Item " + inv.getName());
           // Thread.currentThread().wait();
         int index;
         int quantity = inv.getQuantity();
-        if(quantity != 0)
+        if(ILC.getIL().get(inv.InventoryID).Quantity != 0)
         {
             cartContents.add(inv);
             for(int i = 0; i < ILC.getIL().size(); i++)
@@ -38,6 +38,7 @@ public class Cart
                 {
                     quantity = inv.getQuantity()-1;
                     index = i;
+                   
                     ILC.setItemQuantity(index, quantity);
                     subtotal = subtotal + ILC.getItemPrice(inv.getID());
                 
@@ -45,7 +46,11 @@ public class Cart
             }
         }
          
-         
+        try {
+            Thread.sleep(4000);
+        } catch (InterruptedException ex) {
+            Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, null, ex);
+        }
          System.out.println(Thread.currentThread().getName() + " added item " + inv.getName());
         //System.out.println("****************************************************************");
 

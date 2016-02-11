@@ -68,20 +68,21 @@ public class OrderListCntl extends Transaction
       System.out.println("Order List");
       Order order1 = new Order(CLC, ILC);
       order1.setShippingPrice(1.00);
+      order1.setOrderID(orderID);
       order1.process();
        
       this.getOrderList().add(order1); 
       
       for(int i = 0; i< this.getOrderList().size(); i++)
         {
-            System.out.println("ID: " + this.getOrderList().get(i).transactionID + " Total Price: " + this.getOrderList().get(i).totalPrice + " Shipping Price: " + this.getOrderList().get(i).shippingPrice + " Shipping Address: " + this.getOrderList().get(i).shippingAddress + " Billing Address: " + this.getOrderList().get(i).billingAddress + " Item" + this.getOrderList().get(i).InventoryItemOrder.ILC.getItemName(i));
+            System.out.println("ID: " + this.getOrderList().get(i).orderID + " Total Price: " + this.getOrderList().get(i).totalPrice + " Shipping Price: " + this.getOrderList().get(i).shippingPrice + " Shipping Address: " + this.getOrderList().get(i).shippingAddress + " Billing Address: " + this.getOrderList().get(i).billingAddress + " Item" + this.getOrderList().get(i).InventoryItemOrder.ILC.getItemName(i));
         }
     }
     
     @Override
     void process()
     {
-        transactionID++;
+        orderID++;
     }
     
 }

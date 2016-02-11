@@ -9,7 +9,7 @@ import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class InventoryListCntl implements Runnable
+public class InventoryListCntl 
 {
     //so long as we implmeent the correct controls in inventory listcntl I see no reason to extend it to inventory.
     int ID = 0;
@@ -171,19 +171,5 @@ public class InventoryListCntl implements Runnable
         this.getIL().add(this.createItem("Triangle", "Pyramid", 3.00, 1));
     }
 
-    @Override
-    
-    //eventually, these should freeze the inventory item and then turn it over to the customer thread so it can put the item in there
-    //probably will add conditions to make the inventory thread run differently, (eg 
-    public void run() {
-               
-        
-          System.out.println("Here is a list of our Inventory: ");
-         // System.out.println("**************************************************************************************************************");
-          this.displayInvList();
-         // System.out.println("**************************************************************************************************************");
-        
-    
-    }
     }
 

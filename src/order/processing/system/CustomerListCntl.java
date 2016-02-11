@@ -33,11 +33,6 @@ public class CustomerListCntl
         this.getCustomerList().get(index).addOrder(newOrder);
     }
     
-    public synchronized void addItemToCart(Inventory invItem, int index)
-    {
-        this.getCustomerCart(index).addToCart(invItem);
-    }
-    
     //getters
     
     public ArrayList<Customer> getCustomerList()

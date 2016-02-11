@@ -4,7 +4,6 @@ import java.util.ArrayList;
 
 public class Order extends Transaction
 {
-
     CustomerListCntl parentCLC;
     InventoryListCntl parentILC;
     //for now cust is just hard-coded to 0
@@ -16,19 +15,19 @@ public class Order extends Transaction
     String shippingAddress;
     String billingAddress;
     
-    
     public Order(CustomerListCntl theCLC, InventoryListCntl theILC)
     {
-        
         parentCLC = theCLC;
         parentILC = theILC;
         InventoryItemOrder = parentCLC.getCustomerCart(0);
-        orderID = transactionID;
         shippingAddress = parentCLC.getCustomerShipingAddress(0);
         billingAddress = parentCLC.getCustomerBillingAddress(0);
-         
     }
-      
+    
+    public void setOrderID(int newID)
+    {
+        orderID = newID;
+    }
     
     public void setShippingPrice(double input)
     {
@@ -42,15 +41,20 @@ public class Order extends Transaction
     }
     
    public void setBillingAddr(String input)
-    {
+   {
         billingAddress = input;
        
-    }
+   }
     
-    public String getBillingAddress()
-    {
+   public int getOrderID()
+   {
+       return orderID;
+   }
+   
+   public String getBillingAddress()
+   {
         return billingAddress;
-    }
+   }
     
     public void setShippingAddr(String input)
     {

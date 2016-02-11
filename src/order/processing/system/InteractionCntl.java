@@ -1,26 +1,16 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import static java.lang.System.in;
 import java.util.Scanner;
 
-/**
- *
- * @author esm5175
- */
 public class InteractionCntl extends Thread
 {    
-
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
     InventoryListCntl ILC2 = new InventoryListCntl(CLC);
     OrderListCntl OLC = new OrderListCntl(CLC, ILC2);
-    Scanner in = new Scanner(System.in);
-   
+    TransferListCntl TLC = new TransferListCntl(CLC, ILC2, OLC);
+    Scanner in = new Scanner(System.in);   
 
     public void initCustomer()
     {
@@ -33,15 +23,12 @@ public class InteractionCntl extends Thread
         
         //Initializes Inventory
         ILC2.initInvList();
-      
-        
+         
         System.out.println("Welcome to the Order Proc System!");
         System.out.println("You are currently logged in a customer: " + CLC.getCustomerFirstName(0) + " " + CLC.getCustomerLastName(0));
-
-        
+  
         //Displays Selection Grid
         this.displaySelection(this.mainMenu());
-        
  
         System.out.print("Here are the contents of your Cart: ");
         CLC.getCustomerCart(0).printContents();
@@ -73,14 +60,11 @@ public class InteractionCntl extends Thread
         
         if(selection == 1)
         {
-            
-          Thread t1 = new Thread(ILC2);
-          Thread t2 = new Thread(ILC2);
-          
-          System.out.println("I am Thread 1: "+t1.getName());
-          t1.start();
-          t2.start();
-          
+          System.out.println("Here is a list of our Inventory: ");
+          System.out.println("**************************************************************************************************************");
+          ILC2.displayInvList();
+          System.out.println("**************************************************************************************************************");
+      
           System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
           
           int invId = in.nextInt();
