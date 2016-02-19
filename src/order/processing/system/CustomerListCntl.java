@@ -1,13 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import java.util.ArrayList;
 
-public class CustomerListCntl 
+public class CustomerListCntl
 {
     protected CustomerList theCustomerList = new CustomerList();
     private int customerID = 0;
@@ -160,8 +155,9 @@ public class CustomerListCntl
         CC[2] = 5;
      
         this.getCustomerList().add(this.createCustomer("Tom", "Jones", "tj@itsnotunusual.com", "Shipping Address", "Billing Address", pass1, CC));
-        this.getCustomerList().add(this.createCustomer("FN", "LN", "EMAIL", "SA", "BA", pass1, CC));
-        
-        
+        this.getCustomerList().add(this.createCustomer("George", "LN", "EMAIL", "SA", "BA", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Bob", "LN", "EMAIL", "SA", "BA", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Chell", "LN", "EMAIL", "SA", "BA", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Ezio", "Auditore", "EMAIL", "SA", "BA", pass1, CC));
     }
 }

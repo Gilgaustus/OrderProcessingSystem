@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Inventory implements Runnable
+public class Inventory
 {
     protected int InventoryID;
     protected String itemName;
@@ -40,13 +40,10 @@ public class Inventory implements Runnable
         InventoryID = ID;
     }
     
-    public synchronized void setName(String Name)
+    public void setName(String Name)
     {
-     
         itemName = Name;
-     
-    
-        }
+    }
     
     public void setDescription(String Description)
     {
@@ -61,10 +58,5 @@ public class Inventory implements Runnable
     public void setQuantity(int quantity)
     {
         Quantity = quantity;
-    }
-
-    @Override
-    public void run() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 }

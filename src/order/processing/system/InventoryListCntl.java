@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import static java.lang.System.in;
@@ -28,10 +23,7 @@ public class InventoryListCntl
     }
     
     public synchronized void addItem(Inventory newItem)
-    {try{
-        Thread.sleep(4000);
-    }catch(InterruptedException e)
-    {}
+    {
         this.getIL().add(newItem);
         
     }
@@ -41,23 +33,9 @@ public class InventoryListCntl
        return IL.InventoryList;
     }
     
-    public synchronized void deleteItem(int index)
+    public void deleteItem(int index)
     {
-    
-        try{
-            String name = this.getItemName(index);
-         // System.out.println("****************************************************************");
-            System.out.println(Thread.currentThread().getName()+ " deleting item " + name);
-        this.getIL().remove(index);
-     
-        System.out.println(Thread.currentThread().getName() + "deleted Item " + name);
-       // System.out.println("****************************************************************"); 
-        Thread.sleep(4000);
-        }catch(InterruptedException e)
-        {
-            System.out.println("No item to delete");
-        }
-            
+        this.getIL().remove(index); 
     }
     
     //getters
@@ -68,7 +46,7 @@ public class InventoryListCntl
         return this.getIL().get(index);
     }
      
-    public synchronized int getItemID(int index)
+    public int getItemID(int index)
     {
         
         try
@@ -118,38 +96,21 @@ public class InventoryListCntl
     }
 
     //I don't think the setters really need synch as they are not used by the customer at any point, however I've done some as a proof of concept
-    public synchronized void setItemName(int index, String Name)
+    public void setItemName(int index, String Name)
     {
-        try{
-            
-            this.getIL().get(index).setName(Name);
-            System.out.println(Thread.currentThread().getName() + " reset Item " + this.getIL().get(index) + "n me to " + Name);
-        Thread.sleep(4000);
-        }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
-    }
-    public  synchronized void setItemDescription(int index, String input)
-    { try{
-            Thread.sleep(4000);
-        this.getIL().get(index).setDescription(input);
-            }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
-    }
-    public synchronized  void setItemPrice(int index, double Price)
-    { try{
-            Thread.sleep(4000);
-        this.getIL().get(index).setPrice(Price);
-            }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
+        this.getIL().get(index).setName(Name);     
     }
     
-    public  synchronized void setItemQuantity(int index, int quantity)
+    public  synchronized void setItemDescription(int index, String input)
+    {
+        this.getIL().get(index).setDescription(input);
+    }
+    public void setItemPrice(int index, double Price)
+    {
+        this.getIL().get(index).setPrice(Price);
+    }
+    
+    public void setItemQuantity(int index, int quantity)
     { 
             
         this.getIL().get(index).setQuantity(quantity);

@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Order extends Transaction
+public class Order
 {
     CustomerListCntl parentCLC;
     InventoryListCntl parentILC;

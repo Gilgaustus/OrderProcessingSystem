@@ -18,6 +18,7 @@ public class OrderListCntl extends Transaction
     InventoryListCntl ILC;
     int orderID = 0;
     
+    
     OrderList OL = new OrderList();
     
     public OrderListCntl(CustomerListCntl inputCLC, InventoryListCntl inputILC)
@@ -57,7 +58,7 @@ public class OrderListCntl extends Transaction
     {
         for (int i = 0; i < this.getOrderList().size(); i++) 
         {
-            if (customerID == this.getOrderList().get(i).customerID) 
+            if (customerID == this.getOrderList().get(i).getCustomerID()) 
             {
                 System.out.println(" Order ID: " + this.getOrderList().get(i).orderID);
                 for (int j = 0; j < this.getOrderList().get(i).getCart().cartContents.size(); j++)
@@ -83,6 +84,7 @@ public class OrderListCntl extends Transaction
       order1.setShippingPrice(1.00);
       order1.setOrderID(orderID);
       order1.setCustomerID(0);
+      order1.setCart(CLC.getCustomerCart(0));
       order1.process();
        
       this.getOrderList().add(order1); 
@@ -97,6 +99,11 @@ public class OrderListCntl extends Transaction
     void process()
     {
         orderID++;
+    }
+    
+    public void run()
+    {
+        
     }
     
 }

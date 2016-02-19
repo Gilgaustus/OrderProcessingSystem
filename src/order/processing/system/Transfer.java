@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Transfer extends Transaction
+public class Transfer
 {
     Inventory invToReturn;
     Inventory invToGet;

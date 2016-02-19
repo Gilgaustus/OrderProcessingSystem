@@ -7,10 +7,11 @@ public class InteractionCntl extends Thread
 {    
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
-    InventoryListCntl ILC2 = new InventoryListCntl(CLC);
-    OrderListCntl OLC = new OrderListCntl(CLC, ILC2);
-    TransferListCntl TLC = new TransferListCntl(CLC, ILC2, OLC);
-    Scanner in = new Scanner(System.in);   
+    OrderListCntl OLC = new OrderListCntl(CLC, ILC);
+    TransferListCntl TLC = new TransferListCntl(CLC, ILC, OLC);
+    Scanner in = new Scanner(System.in);
+    
+    
 
     public void initCustomer()
     {
@@ -22,7 +23,7 @@ public class InteractionCntl extends Thread
         this.initCustomer();
         
         //Initializes Inventory
-        ILC2.initInvList();
+        ILC.initInvList();
          
         System.out.println("Welcome to the Order Proc System!");
         System.out.println("You are currently logged in a customer: " + CLC.getCustomerFirstName(0) + " " + CLC.getCustomerLastName(0));
@@ -63,7 +64,7 @@ public class InteractionCntl extends Thread
         {
           System.out.println("Here is a list of our Inventory: ");
           System.out.println("**************************************************************************************************************");
-          ILC2.displayInvList();
+          ILC.displayInvList();
           System.out.println("**************************************************************************************************************");
       
           System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
@@ -72,11 +73,11 @@ public class InteractionCntl extends Thread
           //clears scanner
           in = new Scanner (System.in);
             
-          for(int i = 0; i < ILC2.getIL().size(); i++)
+          for(int i = 0; i < ILC.getIL().size(); i++)
           {   
-              if(invId == ILC2.getItemID(i))
+              if(invId == ILC.getItemID(i))
                   
-              CLC.getCustomerCart(0).addToCart(ILC2.getItem(i));
+              CLC.getCustomerCart(0).addToCart(ILC.getItem(i));
           }
          
           
@@ -122,7 +123,7 @@ public class InteractionCntl extends Thread
                 System.out.println("Select the item you want to increase from the cart list above: ");
                 int addItem = in.nextInt();
                 if (addItem >= 0 && addItem <= CLC.getCustomerCart(0).getCartList().size())
-                    CLC.getCustomerCart(0).addToCart(ILC2.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
+                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
                 else
                 {
                     System.out.println("Invalid input");
@@ -197,10 +198,10 @@ public class InteractionCntl extends Thread
             
             if (decision == 4)
             {
-                OLC.getOrderList().add(OLC.createOrder(CLC, ILC2, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
+                OLC.getOrderList().add(OLC.createOrder(CLC, ILC, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
                 OLC.process();
                 CLC.getCustomerList().get(0).getCart().cartContents.clear();
-                System.out.println(OLC.getOrderList().get(0).transactionID);
+                System.out.println(OLC.getOrderList().get(0).getOrderID());
                 System.out.println("Order placed!");
                 this.displaySelection(this.mainMenu());
             }
@@ -220,7 +221,7 @@ public class InteractionCntl extends Thread
             System.out.println("Now choose which item would you like in exchange.");
             System.out.println("Here is a list of our Inventory: ");
             System.out.println("**************************************************************************************************************");
-            ILC2.displayInvList();
+            ILC.displayInvList();
             System.out.println("**************************************************************************************************************");
             in = new Scanner (System.in);
             int exchangeItem = in.nextInt();
@@ -234,10 +235,7 @@ public class InteractionCntl extends Thread
 
     public InventoryListCntl getILC()
     {
-        return ILC2;
+        return ILC;
     }
-    
-     
-    
     
 }
