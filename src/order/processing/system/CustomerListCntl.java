@@ -191,7 +191,7 @@ public class CustomerListCntl extends Transaction
         synchronized(this)
         {
              try {
-            this.notify();
+            /*
         Scanner in = new Scanner(System.in);
         System.out.println(this.getName() + " Printing Inventory..."); 
         System.out.println("Here is a list of our Inventory: ");
@@ -203,8 +203,8 @@ public class CustomerListCntl extends Transaction
     
         
           System.out.println("Scanner Integer Primed");
-          invID = in.nextInt();
-      
+          invID = in.nextInt();*/
+       
       
        
          
@@ -213,7 +213,6 @@ public class CustomerListCntl extends Transaction
               if(invID == ILC.getItemID(i))
                   
                 this.addToCustomerCart(0, invID);
-                this.notify();
                 this.wait(4000);
           }
         } catch (InterruptedException ex) {
@@ -235,14 +234,12 @@ public class CustomerListCntl extends Transaction
           
           if(option.equalsIgnoreCase("Y"))
           {
-          this.run();
-                     
+            this.run();         
           }
             
           if(option.equalsIgnoreCase("N"))
           {
               System.out.println("Functionality not built yet wait for other threads");
-    
           }
             
           if(!(option.equalsIgnoreCase("Y") && !option.equalsIgnoreCase("N")))

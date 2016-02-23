@@ -7,7 +7,6 @@ public class InteractionCntl extends Thread
 {    
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
-   // InventoryListCntl ILC2 = new InventoryListCntl(CLC);
     OrderListCntl OLC = new OrderListCntl(CLC, ILC);
     TransferListCntl TLC = new TransferListCntl(CLC, ILC, OLC);
     
