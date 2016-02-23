@@ -4,5 +4,5 @@ import java.util.ArrayList;
 
 public class TransferList 
 {
-    protected ArrayList<Transfer> TransferList = new ArrayList<>();
+    ArrayList<Transfer> TransferList = new ArrayList<>();
 }

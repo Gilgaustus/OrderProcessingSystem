@@ -2,7 +2,7 @@ package order.processing.system;
 
 import java.util.ArrayList;
 
-public class TransferListCntl extends Transaction
+public class TransferListCntl 
 {
     CustomerListCntl CLC;
     InventoryListCntl ILC;
@@ -59,8 +59,4 @@ public class TransferListCntl extends Transaction
         this.getTransferList().get(index);
     }
     
-    public void run() 
-    {
-        
-    }
 }

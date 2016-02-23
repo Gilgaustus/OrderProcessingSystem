@@ -97,8 +97,5 @@ public class Order
     {
         totalPrice = totalPrice + InventoryItemOrder.subtotal;
         totalPrice = totalPrice + shippingPrice;
-        
     }
-
-
 }

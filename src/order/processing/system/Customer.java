@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class Customer
+public class Customer 
 {
     protected int customerID;
     protected String firstName;
@@ -22,18 +22,18 @@ public class Customer
     public Customer(InventoryListCntl inputILC)
     {
         ILC = inputILC;
-        theCart = new Cart(ILC);
+        theCart = new Cart();
     }
     
-    public synchronized void addToCart (Inventory Item)
+    public synchronized void addToCart (Inventory Item, InventoryListCntl inputILC)
     {
-        
+        ILC = inputILC;
     try{
         Thread.sleep(4000);
     }catch(InterruptedException e4)
-        {
+    {
            theCart.addToCart(Item);
-        }
+    }
         
     }
     
@@ -133,5 +133,5 @@ public class Customer
     {
         creditCard = newCreditCard;
     }
-
+    
 }

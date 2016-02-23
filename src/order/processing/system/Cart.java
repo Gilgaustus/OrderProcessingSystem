@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import java.util.ArrayList;
@@ -15,45 +10,9 @@ public class Cart
     ArrayList<Inventory> cartContents = new ArrayList<>();
     double subtotal = 0;
     
-    public Cart (InventoryListCntl inputILC)
-    {
-        ILC = inputILC;
-    }
-    
-    //these should really be in a control 
     public void addToCart (Inventory inv)
     {       
-           //System.out.println("****************************************************************");
-
-        System.out.println(Thread.currentThread().getName() + " adding Item " + inv.getName());
-          // Thread.currentThread().wait();
-        int index;
-        int quantity = inv.getQuantity();
-        if(quantity != 0)
-        {
-            cartContents.add(inv);
-            for(int i = 0; i < ILC.getIL().size(); i++)
-            {   
-                if(inv.equals(ILC.getIL().get(i)))
-                {
-                    quantity = inv.getQuantity()-1;
-                    index = i;
-                   
-                    ILC.setItemQuantity(index, quantity);
-                    subtotal = subtotal + ILC.getItemPrice(inv.getID());
-                
-                }
-            }
-        }
-        
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(Cart.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         System.out.println(Thread.currentThread().getName() + " added item " + inv.getName());
-        //System.out.println("****************************************************************");
-
+        cartContents.add(inv);
     }
     
     public void removeFromCart (int cartItemID)
@@ -71,9 +30,19 @@ public class Cart
         }
     }
     
+    public void setSubtotal(double newSubtotal)
+    {
+        subtotal = newSubtotal;
+    }
+    
     public ArrayList<Inventory> getCartList ()
     {
         return cartContents;
+    }
+    
+    public double getSubtotal()
+    {
+        return subtotal;
     }
     
 }

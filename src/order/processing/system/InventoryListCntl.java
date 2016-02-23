@@ -3,27 +3,36 @@ package order.processing.system;
 import static java.lang.System.in;
 import java.util.ArrayList;
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
-public class InventoryListCntl 
+public class InventoryListCntl extends Transaction
 {
     //so long as we implmeent the correct controls in inventory listcntl I see no reason to extend it to inventory.
     int ID = 0;
     InventoryList IL = new InventoryList();
     CustomerListCntl CLC;
     Scanner in = new Scanner(System.in);
+    ArrayList<Inventory> invList;
+    ArrayList<Inventory> inputList;
     
     public InventoryListCntl()
     {
-        
+       
     }
     
     public InventoryListCntl(CustomerListCntl inputCLC)
     {
         CLC = inputCLC;
+        
     }
-    
+   
+   
     public synchronized void addItem(Inventory newItem)
-    {
+    {try{
+        Thread.sleep(4000);
+    }catch(InterruptedException e)
+    {}
         this.getIL().add(newItem);
         
     }
@@ -33,9 +42,23 @@ public class InventoryListCntl
        return IL.InventoryList;
     }
     
-    public void deleteItem(int index)
+    public synchronized void deleteItem(int index)
     {
-        this.getIL().remove(index); 
+    
+        try{
+            String name = this.getItemName(index);
+         // System.out.println("****************************************************************");
+            System.out.println(Thread.currentThread().getName()+ " deleting item " + name);
+        this.getIL().remove(index);
+     
+        System.out.println(Thread.currentThread().getName() + "deleted Item " + name);
+       // System.out.println("****************************************************************"); 
+        Thread.sleep(4000);
+        }catch(InterruptedException e)
+        {
+            System.out.println("No item to delete");
+        }
+            
     }
     
     //getters
@@ -46,7 +69,7 @@ public class InventoryListCntl
         return this.getIL().get(index);
     }
      
-    public int getItemID(int index)
+    public synchronized int getItemID(int index)
     {
         
         try
@@ -96,21 +119,38 @@ public class InventoryListCntl
     }
 
     //I don't think the setters really need synch as they are not used by the customer at any point, however I've done some as a proof of concept
-    public void setItemName(int index, String Name)
+    public synchronized void setItemName(int index, String Name)
     {
-        this.getIL().get(index).setName(Name);     
+        try{
+            
+            this.getIL().get(index).setName(Name);
+            System.out.println(Thread.currentThread().getName() + " reset Item " + this.getIL().get(index) + "n me to " + Name);
+        Thread.sleep(4000);
+        }catch(InterruptedException e)
+        {
+            System.out.println(Thread.currentThread().getName() + "Interrupted");
+        }
     }
-    
     public  synchronized void setItemDescription(int index, String input)
-    {
+    { try{
+            Thread.sleep(4000);
         this.getIL().get(index).setDescription(input);
+            }catch(InterruptedException e)
+        {
+            System.out.println(Thread.currentThread().getName() + "Interrupted");
+        }
     }
-    public void setItemPrice(int index, double Price)
-    {
+    public synchronized  void setItemPrice(int index, double Price)
+    { try{
+            Thread.sleep(4000);
         this.getIL().get(index).setPrice(Price);
+            }catch(InterruptedException e)
+        {
+            System.out.println(Thread.currentThread().getName() + "Interrupted");
+        }
     }
     
-    public void setItemQuantity(int index, int quantity)
+    public  synchronized void setItemQuantity(int index, int quantity)
     { 
             
         this.getIL().get(index).setQuantity(quantity);
@@ -132,5 +172,50 @@ public class InventoryListCntl
         this.getIL().add(this.createItem("Triangle", "Pyramid", 3.00, 1));
     }
 
+    @Override
+    public void run() {
+         
+//both threads will select an item with 1 stock, 1 will always win out.
+        
+        System.out.println(this.getName() + " Printing Inventory..."); 
+        System.out.println("Here is a list of our Inventory: ");
+          System.out.println("**************************************************************************************************************");
+          this.displayInvList();
+          System.out.println("**************************************************************************************************************");
+      
+          System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
+      synchronized(this)
+      {
+          int invId = in.nextInt();
+       
+           //clears scanner
+          in = new Scanner (System.in);
+          for(int i = 0; i < this.getIL().size(); i++)
+          {   
+              if(invId == this.getItemID(i))
+                  
+              CLC.getCustomerCart(0).addToCart(this.getItem(i));
+          }
+      }
+          System.out.println("Continue Shopping? (Y/N)"); 
+          String option = in.nextLine();
+            
+          if(option.equalsIgnoreCase("Y"))
+          {
+              this.run();
+          }
+            
+          if(option.equalsIgnoreCase("N"))
+          {
+              System.out.println("Goodbye");
+          }
+            
+          if(!(option.equalsIgnoreCase("Y") && !option.equalsIgnoreCase("N")))
+          {
+              System.out.println("Invalid input");
+              this.run();
+          }
+            
+            
+        }
     }
-

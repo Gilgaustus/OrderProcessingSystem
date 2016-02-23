@@ -7,12 +7,17 @@ public class InteractionCntl extends Thread
 {    
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
+   // InventoryListCntl ILC2 = new InventoryListCntl(CLC);
     OrderListCntl OLC = new OrderListCntl(CLC, ILC);
     TransferListCntl TLC = new TransferListCntl(CLC, ILC, OLC);
-    Scanner in = new Scanner(System.in);
     
     
-
+    Scanner in = new Scanner(System.in);   
+    public InteractionCntl()
+    {
+        this.initCustomer();
+        ILC.initInvList();
+    }
     public void initCustomer()
     {
         CLC.testCL();
@@ -22,7 +27,7 @@ public class InteractionCntl extends Thread
         
         this.initCustomer();
         
-        //Initializes Inventory
+        
         ILC.initInvList();
          
         System.out.println("Welcome to the Order Proc System!");
@@ -123,7 +128,7 @@ public class InteractionCntl extends Thread
                 System.out.println("Select the item you want to increase from the cart list above: ");
                 int addItem = in.nextInt();
                 if (addItem >= 0 && addItem <= CLC.getCustomerCart(0).getCartList().size())
-                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
+                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerCart(0).getCartList().get(addItem).getID()));
                 else
                 {
                     System.out.println("Invalid input");
@@ -201,7 +206,7 @@ public class InteractionCntl extends Thread
                 OLC.getOrderList().add(OLC.createOrder(CLC, ILC, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
                 OLC.process();
                 CLC.getCustomerList().get(0).getCart().cartContents.clear();
-                System.out.println(OLC.getOrderList().get(0).getOrderID());
+               // System.out.println("Order ID: "+ OLC.getOrderList().get(0).transactionID);
                 System.out.println("Order placed!");
                 this.displaySelection(this.mainMenu());
             }
@@ -237,5 +242,11 @@ public class InteractionCntl extends Thread
     {
         return ILC;
     }
+    
+    public void run()
+    {
+        this.mainMenu();
+    }
+    
     
 }

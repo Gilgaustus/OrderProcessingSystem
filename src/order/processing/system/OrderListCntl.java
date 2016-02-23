@@ -11,13 +11,12 @@ import java.util.ArrayList;
  *
  * @author esm5175
  */
-public class OrderListCntl extends Transaction
+public class OrderListCntl 
 {
 
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     int orderID = 0;
-    
     
     OrderList OL = new OrderList();
     
@@ -58,11 +57,15 @@ public class OrderListCntl extends Transaction
     {
         for (int i = 0; i < this.getOrderList().size(); i++) 
         {
-            if (customerID == this.getOrderList().get(i).getCustomerID()) 
+         //   if (customerID == this.getOrderList().get(i).customerID) 
             {
                 System.out.println(" Order ID: " + this.getOrderList().get(i).orderID);
+                
+                //i loops through order list 
                 for (int j = 0; j < this.getOrderList().get(i).getCart().cartContents.size(); j++)
-                    System.out.println(j + " ID: " + this.getOrderList().get(i).getCart().getCartList().get(j).getID() + " Name: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getName() + " Desc: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getDescription() + " Price: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getPrice() + "\n\n");
+                {
+                    System.out.println("Cart Position: " + j + " ID: " + this.getOrderList().get(i).getCart().getCartList().get(j).getID() + " Name: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getName() + " Desc: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getDescription() + " Price: " + this.getOrderList().get(i).InventoryItemOrder.getCartList().get(j).getPrice() + "\n\n");
+                } 
             }
         }
     }
@@ -99,11 +102,6 @@ public class OrderListCntl extends Transaction
     void process()
     {
         orderID++;
-    }
-    
-    public void run()
-    {
-        
     }
     
 }

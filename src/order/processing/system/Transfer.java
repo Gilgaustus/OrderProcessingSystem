@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Transfer
+public class Transfer extends Transaction
 {
     Inventory invToReturn;
     Inventory invToGet;
@@ -53,5 +53,11 @@ public class Transfer
     public int getReferencedOrderID()
     {
         return referenceOrderID;
+    }
+
+    
+    public void run() {
+       
+       
     }
 }
