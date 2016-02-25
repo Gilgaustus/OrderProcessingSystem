@@ -20,26 +20,20 @@ public class OrderProcessingSystem {
      */
   
     public static void  main(String[] args)  {
-        // TODO code application logic here
-     InteractionCntl ILCntl = new InteractionCntl(); 
-  
       //Comment this line in to get our interface. 
       //  ILCntl.welcomeProtocol();
         
        //I used CustomerListCntl and then InteractionCntl as a bucket for the ILC this way both customers can access the same list
-      Thread Thread1 = new CustomerListCntl(ILCntl.getILC());
-      Thread Thread2 = new CustomerListCntl(ILCntl.getILC());
-     
+      InteractionCntl interactionCntl = new InteractionCntl();
       
-        Thread1.start();
-       
-        try {
-            Thread1.join(4000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(OrderProcessingSystem.class.getName()).log(Level.SEVERE, null, ex);
-        }
-         Thread2.start();
-       Thread.yield();
+      synchronized(interactionCntl)
+      {
+          try
+          {
+              interactionCntl.start();
+              interactionCntl.wait();
+          } catch(InterruptedException e) {}
+      }
       
       /*Old INCORRECT THREADING, I'm keeping it around in case it becomes useful.  
        ILCntl.getILC().initInvList();

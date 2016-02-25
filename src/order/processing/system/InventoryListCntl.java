@@ -24,7 +24,6 @@ public class InventoryListCntl extends Transaction
     public InventoryListCntl(CustomerListCntl inputCLC)
     {
         CLC = inputCLC;
-        
     }
    
    
@@ -131,30 +130,20 @@ public class InventoryListCntl extends Transaction
             System.out.println(Thread.currentThread().getName() + "Interrupted");
         }
     }
-    public  synchronized void setItemDescription(int index, String input)
-    { try{
-            Thread.sleep(4000);
+    public void setItemDescription(int index, String input)
+    { 
         this.getIL().get(index).setDescription(input);
-            }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
-    }
-    public synchronized  void setItemPrice(int index, double Price)
-    { try{
-            Thread.sleep(4000);
-        this.getIL().get(index).setPrice(Price);
-            }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
     }
     
-    public  synchronized void setItemQuantity(int index, int quantity)
+    public void setItemPrice(int index, double Price)
     { 
-            
+        this.getIL().get(index).setPrice(Price);
+        
+    }
+    
+    public void setItemQuantity(int index, int quantity)
+    { 
         this.getIL().get(index).setQuantity(quantity);
-      
     }
     
     public void displayInvList()
@@ -167,9 +156,9 @@ public class InventoryListCntl extends Transaction
     
     public void initInvList()
     { 
-        this.getIL().add(this.createItem("Ball", "Sphere", 1.00, 3));
-        this.getIL().add(this.createItem("Square", "Cube", 2.00, 2));
-        this.getIL().add(this.createItem("Triangle", "Pyramid", 3.00, 1));
+        this.getIL().add(this.createItem("Ball", "Sphere", 1.00, 5));
+        this.getIL().add(this.createItem("Square", "Cube", 2.00, 5));
+        this.getIL().add(this.createItem("Triangle", "Pyramid", 3.00, 5));
     }
 
     @Override

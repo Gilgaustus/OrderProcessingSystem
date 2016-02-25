@@ -1,33 +1,26 @@
 package order.processing.system;
 
+import java.security.SecureRandom;
 import java.util.ArrayList;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
 
-public class CustomerListCntl extends Transaction
+public class CustomerListCntl
 {
     protected CustomerList theCustomerList = new CustomerList();
     int invID;
     private int customerID = 0;
+    SecureRandom rn;
     protected InventoryListCntl ILC;
-    
-    public CustomerListCntl()
-    {
-        
-    }
-    
-    public void setILC(InventoryListCntl inputILC)
-    {
-        ILC = inputILC;
-    }
     
     public CustomerListCntl(InventoryListCntl inputILC)
     {
         ILC = inputILC;
+        rn = new SecureRandom();
+        invID = rn.nextInt(2);
     }
-   
     
     public void addCustomer(Customer newCustomer)
     {
@@ -37,6 +30,99 @@ public class CustomerListCntl extends Transaction
     public void deleteCustomer(int index)
     {
         this.getCustomerList().remove(index);
+    }
+    
+    public void displayCartList()
+    {
+        for(int i = 0; i < this.getCustomerList().get(0).getCart().getCartList().size(); i++)
+        {    
+            System.out.println(i + "." + " ID: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getID() + " Name: "+ this.getCustomerList().get(0).getCart().getCartList().get(i).getName() + " Desc: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getDescription() + "  Price: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getPrice());
+        }
+    }
+    
+    public void addToCustomerCart(int customerIndex, int itemID)
+    {
+        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " adding Item " + ILC.getIL().get(itemID).getName());
+
+        int index;
+        int quantity = ILC.getIL().get(itemID).getQuantity();
+        boolean addedToCart = false;
+        double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
+        if(quantity != 0)
+        {
+            this.getCustomerCart(customerIndex).getCartList().add(ILC.getIL().get(itemID));
+            for(int i = 0; i < ILC.getIL().size(); i++)
+            {   
+                if(ILC.getIL().get(itemID).equals(ILC.getIL().get(i)))
+                {
+                    quantity--;
+                    index = i;
+                   
+                    ILC.setItemQuantity(index, quantity);
+                    subtotal = subtotal + ILC.getItemPrice(index);
+                    addedToCart = true;
+                    this.getCustomerCart(customerIndex).setSubtotal(subtotal);
+                    System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " added Item " + ILC.getIL().get(itemID).getName());
+                }
+            }
+            if (!addedToCart) 
+                System.out.println("Item not available.");
+        }
+    }
+    
+    public void removeFromCustomerCart(int customerIndex, int itemID)
+    {
+        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID).getName());
+        
+        int index;
+        int quantity = ILC.getIL().get(itemID).getQuantity();
+        boolean changeInCart = false;
+        double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
+        if (this.getCustomerCart(customerIndex).getCartList().size() > 0)
+        {
+            for (int i = 0; i < this.getCustomerCart(customerIndex).getCartList().size(); i++)
+            {
+                if (itemID == this.getCustomerCart(customerIndex).getCartList().get(i).getID())
+                {
+                    index = this.getCustomerCart(customerIndex).getCartList().get(i).getID();
+                    this.getCustomerCart(customerIndex).getCartList().remove(i);
+                    changeInCart = true;
+                    quantity++;
+                    
+                    ILC.setItemQuantity(index, quantity);
+                    subtotal = subtotal - ILC.getItemPrice(index);
+                    this.getCustomerCart(customerID).setSubtotal(subtotal);
+                    System.out.println("Removed item from cart.");
+                    break;
+                }
+            }
+            if (!changeInCart) 
+                System.out.println("No such item in cart.");
+        } 
+        else
+            System.out.println("No items in cart.");
+    }
+   
+    public void testCL()
+    {
+        char[] pass1 = new char[1];
+        pass1[0] = 1;
+ 
+        
+        char[] CC = new char[3];
+        CC[0] = 3;
+        CC[1] = 4;
+        CC[2] = 5;
+     
+        this.getCustomerList().add(this.createCustomer("Tom", "Jones", "tj@itsnotunusual.com", "Shipping Address", "Billing Address", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Jake", "StateFarm", "EMAIL", "SA", "BA", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Bob", "Smith", "EMAIL", "Shipping Address", "Billing Address", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("John", "Lennon", "EMAIL", "SA", "BA", pass1, CC));
+        
+        for(int i = 0; i < this.getCustomerList().size(); i++)
+        {
+            this.getCustomerList().get(i).getCart().ILC = ILC;
+        }
     }
     
     //getters
@@ -151,126 +237,5 @@ public class CustomerListCntl extends Transaction
         this.getCustomerList().get(index).setCreditCard(newCustomerCreditCard);
     }
     
-    public void displayCartList()
-    {
-        for(int i = 0; i < this.getCustomerList().get(0).getCart().getCartList().size(); i++)
-        {    
-            System.out.println(i + "." + " ID: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getID() + " Name: "+ this.getCustomerList().get(0).getCart().getCartList().get(i).getName() + " Desc: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getDescription() + "  Price: " + this.getCustomerList().get(0).getCart().getCartList().get(i).getPrice());
-        }
-    }
     
-    public void addToCustomerCart(int customerIndex, int itemID)
-    {
-        System.out.println(Thread.currentThread().getName() + " adding Item " + ILC.getIL().get(itemID).getName());
-          // Thread.currentThread().wait();
-        int index;
-        int quantity = ILC.getIL().get(itemID).getQuantity();
-        double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
-        if(quantity != 0)
-        {
-            this.getCustomerCart(customerIndex).getCartList().add(ILC.getIL().get(itemID));
-            for(int i = 0; i < ILC.getIL().size(); i++)
-            {   
-                if(ILC.getIL().get(itemID).equals(ILC.getIL().get(i)))
-                {
-                    quantity = ILC.getIL().get(itemID).getQuantity()-1;
-                    index = i;
-                   
-                    ILC.setItemQuantity(index, quantity);
-                    subtotal = subtotal + ILC.getItemPrice(ILC.getIL().get(itemID).getID());
-                    this.getCustomerCart(customerIndex).setSubtotal(subtotal);
-                }
-            }
-        }
-    }
-    
-    @Override
-    public void run(){
-        this.testCL();
-        
-        synchronized(this)
-        {
-             try {
-            /*
-        Scanner in = new Scanner(System.in);
-        System.out.println(this.getName() + " Printing Inventory..."); 
-        System.out.println("Here is a list of our Inventory: ");
-          System.out.println("**************************************************************************************************************");
-          ILC.displayInvList();
-          System.out.println("**************************************************************************************************************");
-      
-          System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
-    
-        
-          System.out.println("Scanner Integer Primed");
-          invID = in.nextInt();*/
-       
-      
-       
-         
-        for(int i = 0; i < ILC.getIL().size(); i++)
-          {   
-              if(invID == ILC.getItemID(i))
-                  
-                this.addToCustomerCart(0, invID);
-                this.wait(4000);
-          }
-        } catch (InterruptedException ex) {
-            Logger.getLogger(CustomerListCntl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-        }
- 
-        try {
-            Thread.sleep(4000);
-        } catch (InterruptedException ex) {
-            Logger.getLogger(CustomerListCntl.class.getName()).log(Level.SEVERE, null, ex);
-        }
-       
-        System.out.println("Scanner 2 initialized");
-          Scanner in2 = new Scanner (System.in);
-          System.out.println("Should"+ this.getName() + "Continue Shopping? (Y/N)"); 
-          System.out.println("Scanner option Primed");
-          String option = in2.nextLine();
-          
-          if(option.equalsIgnoreCase("Y"))
-          {
-            this.run();         
-          }
-            
-          if(option.equalsIgnoreCase("N"))
-          {
-              System.out.println("Functionality not built yet wait for other threads");
-          }
-            
-          if(!(option.equalsIgnoreCase("Y") && !option.equalsIgnoreCase("N")))
-          {
-             System.out.println("Functionality not built yet wait for other threads");
-                       
-          }     
-    
-    
-    }
-    
-    public void testCL()
-    {
-        char[] pass1 = new char[1];
-        pass1[0] = 1;
- 
-        
-        char[] CC = new char[3];
-        CC[0] = 3;
-        CC[1] = 4;
-        CC[2] = 5;
-     
-        this.getCustomerList().add(this.createCustomer("Tom", "Jones", "tj@itsnotunusual.com", "Shipping Address", "Billing Address", pass1, CC));
-        this.getCustomerList().add(this.createCustomer("Jake", "StateFarm", "EMAIL", "SA", "BA", pass1, CC));
-        this.getCustomerList().add(this.createCustomer("Bob", "Smith", "tj@itsnotunusual.com", "Shipping Address", "Billing Address", pass1, CC));
-        this.getCustomerList().add(this.createCustomer("John", "Lennon", "EMAIL", "SA", "BA", pass1, CC));
-        
-        for(int i = 0; i < this.getCustomerList().size(); i++)
-        {
-            this.getCustomerList().get(i).getCart().ILC = ILC;
-        }
-        
-    }
 }

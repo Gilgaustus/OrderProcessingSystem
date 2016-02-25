@@ -14,20 +14,12 @@ public class InteractionCntl extends Thread
     Scanner in = new Scanner(System.in);   
     public InteractionCntl()
     {
-        this.initCustomer();
+        CLC.testCL();
         ILC.initInvList();
     }
-    public void initCustomer()
-    {
-        CLC.testCL();
-    }
+    
     public void welcomeProtocol()
     {
-        
-        this.initCustomer();
-        
-        
-        ILC.initInvList();
          
         System.out.println("Welcome to the Order Proc System!");
         System.out.println("You are currently logged in a customer: " + CLC.getCustomerFirstName(0) + " " + CLC.getCustomerLastName(0));
@@ -244,8 +236,32 @@ public class InteractionCntl extends Thread
     
     public void run()
     {
-        this.mainMenu();
+        synchronized(this)
+        {
+            int theThreads = 2;
+            
+            Thread[] threadMaker = new ThreadMaker[theThreads];
+            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0, 0);
+            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1, 0);
+            
+            for (int i = 0; i < threadMaker.length; i++) 
+            {
+                threadMaker[i].start();
+            }
+            
+            System.out.println("Thread count: " + Thread.activeCount());
+
+            boolean threadsAreAlive;
+            do
+            {
+                threadsAreAlive = false;
+                for(int k = 0; k < threadMaker.length; k++)
+                {
+                    threadsAreAlive = threadMaker[k].isAlive() || threadsAreAlive;
+		}
+            } while(threadsAreAlive);
+			
+            this.notify();
+        }
     }
-    
-    
 }
