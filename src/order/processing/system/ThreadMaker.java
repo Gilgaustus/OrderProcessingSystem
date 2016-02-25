@@ -30,36 +30,46 @@ public class ThreadMaker extends Thread
             for(int i = 0; i < ILC.getIL().size(); i++)
             {   
                 if(invID == ILC.getItemID(i))
-                CLC.addToCustomerCart(customerID, invID);
+                {
+                    CLC.addToCustomerCart(customerID, invID);
+                    ILC.displayInvList();
+                }
             }
-            this.yield();
+            Thread.yield();
             
             invID = rn.nextInt(2);
             
             for(int i = 0; i < ILC.getIL().size(); i++)
             {   
                 if(invID == ILC.getItemID(i))
-                CLC.addToCustomerCart(customerID, invID);
+                {
+                    CLC.addToCustomerCart(customerID, invID);
+                    ILC.displayInvList();
+                }
             }
-            this.yield();
+            Thread.yield();
             
             invID = rn.nextInt(2);
             
             for(int i = 0; i < ILC.getIL().size(); i++)
             {   
                 if(invID == ILC.getItemID(i))
-                CLC.addToCustomerCart(customerID, invID);
+                {
+                    CLC.addToCustomerCart(customerID, invID);
+                    ILC.displayInvList();
+                }
             }
-            
-            this.yield();
-            
-            invID = rn.nextInt(2);
-            CLC.removeFromCustomerCart(customerID, invID);
-            this.yield();
+            Thread.yield();
             
             invID = rn.nextInt(2);
             CLC.removeFromCustomerCart(customerID, invID);
-            this.yield();
+            ILC.displayInvList();
+            Thread.yield();
+            
+            invID = rn.nextInt(2);
+            CLC.removeFromCustomerCart(customerID, invID);
+            ILC.displayInvList();
+            Thread.yield();
         }
     }
 }
