@@ -73,7 +73,7 @@ public class CustomerListCntl
     public void removeFromCustomerCart(int customerIndex, int itemID)
     {
         System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID).getName());
-        
+      
         int index;
         int quantity = ILC.getIL().get(itemID).getQuantity();
         boolean changeInCart = false;
@@ -91,7 +91,7 @@ public class CustomerListCntl
                     
                     ILC.setItemQuantity(index, quantity);
                     subtotal = subtotal - ILC.getItemPrice(index);
-                    this.getCustomerCart(customerID).setSubtotal(subtotal);
+                    this.getCustomerCart(customerIndex).setSubtotal(subtotal);
                     System.out.println("Removed item from cart.");
                     break;
                 }
@@ -181,9 +181,7 @@ public class CustomerListCntl
     {
         return this.getCustomerList().get(index).getCart();
     }
-    
-    
-    
+   
     //setters
     public Customer createCustomer(String newFirstName, String newLastName, String newEmail, String newShippingAddress, String newBillingAddress, char[] newPassword, char[] newCreditCard)
     {
@@ -236,6 +234,4 @@ public class CustomerListCntl
     {
         this.getCustomerList().get(index).setCreditCard(newCustomerCreditCard);
     }
-    
-    
 }

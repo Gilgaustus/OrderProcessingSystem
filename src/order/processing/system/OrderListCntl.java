@@ -1,19 +1,9 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import java.util.ArrayList;
 
-/**
- *
- * @author esm5175
- */
 public class OrderListCntl 
 {
-
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     int orderID = 0;
@@ -72,7 +62,11 @@ public class OrderListCntl
     
     public void setOrder(int index, Order order)
     {
-       this.getOrderList().set(index, order);
+       System.out.println("Index: "+ index);
+       if(this.getOrderList().size() != 0)
+       {
+           this.getOrderList().set(index, order);
+       }
     }
     
     public void deleteOrder(Order order)
@@ -98,10 +92,8 @@ public class OrderListCntl
         }
     }
     
-    
     void process()
     {
         orderID++;
     }
-    
 }
