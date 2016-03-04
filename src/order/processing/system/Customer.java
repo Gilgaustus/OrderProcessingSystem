@@ -1,9 +1,5 @@
 package order.processing.system;
 
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 public class Customer 
 {
     protected int customerID;
@@ -15,7 +11,7 @@ public class Customer
     protected char[] password;
     protected char[] creditCard;
     protected Cart theCart;
-    protected ArrayList<Order> ordersPlaced; //array of Order IDs of orders customer has placed
+    protected int[] ordersPlaced; //array of Order IDs of orders customer has placed
     protected int ordersSize = 0;
     protected InventoryListCntl ILC;
     
@@ -28,13 +24,7 @@ public class Customer
     public synchronized void addToCart (Inventory Item, InventoryListCntl inputILC)
     {
         ILC = inputILC;
-    try{
-        Thread.sleep(4000);
-    }catch(InterruptedException e4)
-    {
-           theCart.addToCart(Item);
-    }
-        
+        theCart.addToCart(Item);
     }
     
     public void removeFromCart (int cartItemID)
@@ -88,7 +78,7 @@ public class Customer
         return theCart;
     }
     
-    public ArrayList<Order> getOrdersPlaced()
+    public int[] getOrdersPlaced()
     {
         return ordersPlaced;
     }

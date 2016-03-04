@@ -46,7 +46,6 @@ public class CustomerListCntl
 
         int index;
         int quantity = ILC.getIL().get(itemID).getQuantity();
-        boolean addedToCart = false;
         double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
         if(quantity != 0)
         {
@@ -60,14 +59,13 @@ public class CustomerListCntl
                    
                     ILC.setItemQuantity(index, quantity);
                     subtotal = subtotal + ILC.getItemPrice(index);
-                    addedToCart = true;
                     this.getCustomerCart(customerIndex).setSubtotal(subtotal);
                     System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " added Item " + ILC.getIL().get(itemID).getName());
                 }
             }
-            if (!addedToCart) 
-                System.out.println("Item not available.");
         }
+        else
+            System.out.println("Item not available.");
     }
     
     public void removeFromCustomerCart(int customerIndex, int itemID)
@@ -118,6 +116,7 @@ public class CustomerListCntl
         this.getCustomerList().add(this.createCustomer("Jake", "StateFarm", "EMAIL", "SA", "BA", pass1, CC));
         this.getCustomerList().add(this.createCustomer("Bob", "Smith", "EMAIL", "Shipping Address", "Billing Address", pass1, CC));
         this.getCustomerList().add(this.createCustomer("John", "Lennon", "EMAIL", "SA", "BA", pass1, CC));
+        this.getCustomerList().add(this.createCustomer("Chelle", "Portal", "EMAIL", "SA", "BA", pass1, CC));
         
         for(int i = 0; i < this.getCustomerList().size(); i++)
         {

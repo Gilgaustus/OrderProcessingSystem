@@ -1,6 +1,5 @@
 package order.processing.system;
 
-import static java.lang.System.in;
 import java.util.Scanner;
 
 public class InteractionCntl extends Thread
@@ -194,7 +193,7 @@ public class InteractionCntl extends Thread
             
             if (decision == 4)
             {
-                OLC.getOrderList().add(OLC.createOrder(CLC, ILC, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
+                OLC.createOrder(CLC, ILC, CLC.getCustomerID(0), CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0));
                 OLC.process();
                 CLC.getCustomerList().get(0).getCart().cartContents.clear();
                // System.out.println("Order ID: "+ OLC.getOrderList().get(0).transactionID);
@@ -238,11 +237,14 @@ public class InteractionCntl extends Thread
     {
         synchronized(this)
         {
-            int theThreads = 2;
+            int theThreads = 5;
             
             Thread[] threadMaker = new ThreadMaker[theThreads];
             threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0, 0);
-            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1, 0);
+            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1, 2);
+            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC, 2, 1);
+            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC, 3, 0);
+            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC, 4, 2);
             
             for (int i = 0; i < threadMaker.length; i++) 
             {
