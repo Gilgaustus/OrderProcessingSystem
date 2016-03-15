@@ -29,7 +29,7 @@ public class InteractionCntl extends Thread
         System.out.print("Here are the contents of your Cart: ");
         CLC.getCustomerCart(0).printContents();
         System.out.println("The cart will now process your order: ");
-        OLC.compileOdrList();
+        //OLC.compileOdrList();
         System.out.println("Have a nice day!");
         System.exit(0);   
     }
