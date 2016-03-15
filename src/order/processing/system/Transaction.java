@@ -5,11 +5,7 @@
  */
 package order.processing.system;
 
-public abstract class Transaction
+public abstract class Transaction extends Thread
 {
-    int transactionID;
-    int customerID;
-    
-    abstract void process();
-    
+    public abstract void run();
 }

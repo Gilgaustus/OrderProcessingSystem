@@ -1,49 +1,35 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package order.processing.system;
 
 import java.util.Scanner;
 
-/**
- *
- * @author esm5175
- */
-public class InteractionCntl
-{
+public class InteractionCntl extends Thread
+{    
     InventoryListCntl ILC = new InventoryListCntl();
     CustomerListCntl CLC = new CustomerListCntl(ILC);
     OrderListCntl OLC = new OrderListCntl(CLC, ILC);
-    Scanner in = new Scanner(System.in);
-   
-
-    public void initCustomer()
+    TransferListCntl TLC = new TransferListCntl(CLC, ILC, OLC);
+    
+    
+    Scanner in = new Scanner(System.in);   
+    public InteractionCntl()
     {
         CLC.testCL();
+        ILC.initInvList();
     }
- 
+    
     public void welcomeProtocol()
     {
-        
-        this.initCustomer();
-        
-        //Initializes Inventory
-        ILC.initInvList();
-        
+         
         System.out.println("Welcome to the Order Proc System!");
         System.out.println("You are currently logged in a customer: " + CLC.getCustomerFirstName(0) + " " + CLC.getCustomerLastName(0));
-
-        
+  
         //Displays Selection Grid
         this.displaySelection(this.mainMenu());
-        
  
         System.out.print("Here are the contents of your Cart: ");
         CLC.getCustomerCart(0).printContents();
         System.out.println("The cart will now process your order: ");
-        OLC.compileOdrList();
+        //OLC.compileOdrList();
         System.out.println("Have a nice day!");
         System.exit(0);   
     }
@@ -52,12 +38,13 @@ public class InteractionCntl
     {
         //we want scanner to clear after clearing menu so each is declared in a method
         System.out.println("Main Menu");
-        System.out.println("**************************************************************************************************");
+       // System.out.println("**************************************************************************************************");
         System.out.println("Select the number in the bracket () to navigate to its respective option");
         System.out.println(" (1) View Inventory ");
         System.out.println(" (2) View Cart ");
         System.out.println(" (3) Checkout ");
-        System.out.println("**************************************************************************************************");
+        System.out.println(" (4) Transfer ");
+     //   System.out.println("**************************************************************************************************");
         System.out.println("Enter Number:  ");
         int selection = in.nextInt();
         return selection;
@@ -74,8 +61,9 @@ public class InteractionCntl
           System.out.println("**************************************************************************************************************");
           ILC.displayInvList();
           System.out.println("**************************************************************************************************************");
-            
+      
           System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
+          
           int invId = in.nextInt();
           //clears scanner
           in = new Scanner (System.in);
@@ -83,9 +71,11 @@ public class InteractionCntl
           for(int i = 0; i < ILC.getIL().size(); i++)
           {   
               if(invId == ILC.getItemID(i))
+                  
               CLC.getCustomerCart(0).addToCart(ILC.getItem(i));
           }
-            
+         
+          
           System.out.println("Continue Shopping? (Y/N)"); 
           String option = in.nextLine();
             
@@ -112,9 +102,9 @@ public class InteractionCntl
         {
             int decision;
             System.out.println("Here is a list of your cart: ");
-            System.out.println("**************************************************************************************************************");
+            //System.out.println("**************************************************************************************************************");
             CLC.displayCartList();
-            System.out.println("**************************************************************************************************************");
+          //  System.out.println("**************************************************************************************************************");
           
             //decide if you want to remove an item, increase quantity, or go back to the menu
             System.out.println("Select the number in the bracket () to activate its respective option");
@@ -128,7 +118,7 @@ public class InteractionCntl
                 System.out.println("Select the item you want to increase from the cart list above: ");
                 int addItem = in.nextInt();
                 if (addItem >= 0 && addItem <= CLC.getCustomerCart(0).getCartList().size())
-                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerList().get(0).getCart().getCartList().get(addItem).getID()));
+                    CLC.getCustomerCart(0).addToCart(ILC.getItem(CLC.getCustomerCart(0).getCartList().get(addItem).getID()));
                 else
                 {
                     System.out.println("Invalid input");
@@ -163,6 +153,9 @@ public class InteractionCntl
             int decision;
             System.out.println("Here is your current order");
             System.out.println("*****************************************");
+            
+            
+            //may be obselete after threads
             CLC.displayCartList();
             System.out.println(" Shipping Address: " + CLC.getCustomerShipingAddress(0));
             System.out.println(" Billing Address: " + CLC.getCustomerBillingAddress(0));
@@ -200,19 +193,77 @@ public class InteractionCntl
             
             if (decision == 4)
             {
-            OLC.getOrderList().add(OLC.createOrder(CLC, ILC, CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0)));
-            OLC.process();
-            CLC.getCustomerList().get(0).getCart().cartContents.clear();
-            System.out.println(OLC.getOrderList().get(0).transactionID);
-            System.out.println("Order placed!");
-            this.displaySelection(this.mainMenu());
+                OLC.createOrder(CLC, ILC, CLC.getCustomerID(0), CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0));
+                OLC.process();
+                CLC.getCustomerList().get(0).getCart().cartContents.clear();
+               // System.out.println("Order ID: "+ OLC.getOrderList().get(0).transactionID);
+                System.out.println("Order placed!");
+                this.displaySelection(this.mainMenu());
             }
+        }
+        
+        if (selection == 4)
+        {
+            OLC.showCustomerOrder(0);
+            System.out.println("From which order do you want to transfer an item from?");
+            in = new Scanner (System.in);
+            int orderNumber = in.nextInt();
+            
+            System.out.println("Which item do you want to return? (Choose the position of the item within the order, not the ID)");
+            in = new Scanner (System.in);
+            int itemToReturn = in.nextInt();
+            
+            System.out.println("Now choose which item would you like in exchange.");
+            System.out.println("Here is a list of our Inventory: ");
+            System.out.println("**************************************************************************************************************");
+            ILC.displayInvList();
+            System.out.println("**************************************************************************************************************");
+            in = new Scanner (System.in);
+            int exchangeItem = in.nextInt();
+            
+            TLC.createTransfer(orderNumber, itemToReturn, exchangeItem);
+            System.out.println("Transfer placed!");
+            this.displaySelection(this.mainMenu());
         }
     
     }
 
+    public InventoryListCntl getILC()
+    {
+        return ILC;
+    }
     
-     
-    
-    
+    public void run()
+    {
+        synchronized(this)
+        {
+            int theThreads = 5;
+            
+            Thread[] threadMaker = new ThreadMaker[theThreads];
+            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0, 0);
+            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1, 2);
+            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC, 2, 1);
+            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC, 3, 0);
+            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC, 4, 2);
+            
+            for (int i = 0; i < threadMaker.length; i++) 
+            {
+                threadMaker[i].start();
+            }
+            
+            System.out.println("Thread count: " + Thread.activeCount());
+
+            boolean threadsAreAlive;
+            do
+            {
+                threadsAreAlive = false;
+                for(int k = 0; k < threadMaker.length; k++)
+                {
+                    threadsAreAlive = threadMaker[k].isAlive() || threadsAreAlive;
+		}
+            } while(threadsAreAlive);
+			
+            this.notify();
+        }
+    }
 }

@@ -1,6 +1,6 @@
 package order.processing.system;
 
-public class Inventory 
+public class Inventory
 {
     protected int InventoryID;
     protected String itemName;
@@ -16,6 +16,7 @@ public class Inventory
     
     public String getName()
     {
+        
         return itemName;
     }
             
@@ -39,10 +40,13 @@ public class Inventory
         InventoryID = ID;
     }
     
-    public void setName(String Name)
+    public synchronized void setName(String Name)
     {
+     
         itemName = Name;
-    }
+     
+    
+        }
     
     public void setDescription(String Description)
     {

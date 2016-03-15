@@ -1,7 +1,5 @@
 package order.processing.system;
 
-import java.util.ArrayList;
-
 public class Customer 
 {
     protected int customerID;
@@ -13,29 +11,25 @@ public class Customer
     protected char[] password;
     protected char[] creditCard;
     protected Cart theCart;
-    protected ArrayList<Order> ordersPlaced; //array of Order IDs of orders customer has placed
+    protected int[] ordersPlaced; //array of Order IDs of orders customer has placed
     protected int ordersSize = 0;
     protected InventoryListCntl ILC;
     
     public Customer(InventoryListCntl inputILC)
     {
         ILC = inputILC;
-        theCart = new Cart(ILC);
+        theCart = new Cart();
     }
     
-    public void addToCart (Inventory Item)
+    public synchronized void addToCart (Inventory Item, InventoryListCntl inputILC)
     {
+        ILC = inputILC;
         theCart.addToCart(Item);
     }
     
     public void removeFromCart (int cartItemID)
     {
         theCart.removeFromCart(cartItemID);
-    }
-    
-    public void addOrder (Order newOrder)
-    {
-        ordersPlaced.add(newOrder);
     }
     
     //getters
@@ -84,7 +78,7 @@ public class Customer
         return theCart;
     }
     
-    public ArrayList<Order> getOrdersPlaced()
+    public int[] getOrdersPlaced()
     {
         return ordersPlaced;
     }
