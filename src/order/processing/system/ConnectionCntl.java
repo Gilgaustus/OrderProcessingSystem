@@ -23,8 +23,7 @@ public class ConnectionCntl
     public static Connection ConnectionToMySql()
     {    
         connection();
-        String host = "jdbc:mysql://localhost:8889/OrderProcessingSystem"; //FOR MAC
-        //String host = "jdbc:mysql://localhost/*Database_Name*"; //FOR WINDOWS PC
+        String host = "jdbc:mysql://localhost:8889/OrderProcessingSystem"; 
         String Username = "root";
         String Password = "root";
         try {
