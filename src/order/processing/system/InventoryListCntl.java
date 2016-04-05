@@ -1,37 +1,28 @@
 package order.processing.system;
 
-import static java.lang.System.in;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 public class InventoryListCntl extends Transaction
 {
     //so long as we implmeent the correct controls in inventory listcntl I see no reason to extend it to inventory.
     int ID = 0;
     InventoryList IL = new InventoryList();
-    CustomerListCntl CLC;
+    ConnectionCntl CNC;
     Scanner in = new Scanner(System.in);
-    ArrayList<Inventory> invList;
-    ArrayList<Inventory> inputList;
     
-    public InventoryListCntl()
+    public InventoryListCntl(ConnectionCntl inputCNC)
     {
-       
+        CNC = inputCNC;
     }
-    
-    public InventoryListCntl(CustomerListCntl inputCLC)
-    {
-        CLC = inputCLC;
-    }
-   
    
     public synchronized void addItem(Inventory newItem)
-    {try{
-        Thread.sleep(4000);
-    }catch(InterruptedException e)
-    {}
+    {
+        try{
+            Thread.sleep(4000);
+        }catch(InterruptedException e)
+        {}
         this.getIL().add(newItem);
         
     }
@@ -92,44 +83,21 @@ public class InventoryListCntl extends Transaction
     }
     public double getItemPrice(int index)
     {
-        return this.getIL().get(index).Price;
+        return this.getIL().get(index).price;
     }
     public int getItemQuantity(int index)
     {
-        return this.getIL().get(index).Quantity;
+        return this.getIL().get(index).quantity;
     }
     
   
     //setters
-    
-    public Inventory createItem(String Name, String Desc, Double Price, int quantity)
-    {
-        Inventory newItem = new Inventory();
-        
-        newItem.setID(ID);
-        ID++;
-        
-        newItem.setName(Name);
-        newItem.setDescription(Desc);
-        newItem.setPrice(Price);
-        newItem.setQuantity(quantity);
-        
-        return newItem;
-    }
-
     //I don't think the setters really need synch as they are not used by the customer at any point, however I've done some as a proof of concept
     public synchronized void setItemName(int index, String Name)
     {
-        try{
-            
-            this.getIL().get(index).setName(Name);
-            System.out.println(Thread.currentThread().getName() + " reset Item " + this.getIL().get(index) + "n me to " + Name);
-        Thread.sleep(4000);
-        }catch(InterruptedException e)
-        {
-            System.out.println(Thread.currentThread().getName() + "Interrupted");
-        }
+        this.getIL().get(index).setName(Name);
     }
+    
     public void setItemDescription(int index, String input)
     { 
         this.getIL().get(index).setDescription(input);
@@ -144,6 +112,7 @@ public class InventoryListCntl extends Transaction
     public void setItemQuantity(int index, int quantity)
     { 
         this.getIL().get(index).setQuantity(quantity);
+        
     }
     
     public void displayInvList()
@@ -154,57 +123,9 @@ public class InventoryListCntl extends Transaction
         }
     }
     
-    public void initInvList()
-    { 
-        this.getIL().add(this.createItem("Ball", "Sphere", 1.00, 5));
-        this.getIL().add(this.createItem("Square", "Cube", 2.00, 5));
-        this.getIL().add(this.createItem("Triangle", "Pyramid", 3.00, 5));
+    public void initInvList() throws SQLException
+    {
+        CNC.GetInventoryData(this.getIL());
+        this.displayInvList();
     }
-
-    @Override
-    public void run() {
-         
-//both threads will select an item with 1 stock, 1 will always win out.
-        
-        System.out.println(this.getName() + " Printing Inventory..."); 
-        System.out.println("Here is a list of our Inventory: ");
-          System.out.println("**************************************************************************************************************");
-          this.displayInvList();
-          System.out.println("**************************************************************************************************************");
-      
-          System.out.println("Please Enter the ID of the Inventory Item You'd like to add to your cart: ");
-      synchronized(this)
-      {
-          int invId = in.nextInt();
-       
-           //clears scanner
-          in = new Scanner (System.in);
-          for(int i = 0; i < this.getIL().size(); i++)
-          {   
-              if(invId == this.getItemID(i))
-                  
-              CLC.getCustomerCart(0).addToCart(this.getItem(i));
-          }
-      }
-          System.out.println("Continue Shopping? (Y/N)"); 
-          String option = in.nextLine();
-            
-          if(option.equalsIgnoreCase("Y"))
-          {
-              this.run();
-          }
-            
-          if(option.equalsIgnoreCase("N"))
-          {
-              System.out.println("Goodbye");
-          }
-            
-          if(!(option.equalsIgnoreCase("Y") && !option.equalsIgnoreCase("N")))
-          {
-              System.out.println("Invalid input");
-              this.run();
-          }
-            
-            
-        }
-    }
+}

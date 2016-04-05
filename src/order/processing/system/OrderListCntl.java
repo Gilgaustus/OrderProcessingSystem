@@ -4,14 +4,16 @@ import java.util.ArrayList;
 
 public class OrderListCntl 
 {
+    ConnectionCntl CNC;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     int orderID = 0;
     
     OrderList OL = new OrderList();
     
-    public OrderListCntl(CustomerListCntl inputCLC, InventoryListCntl inputILC)
+    public OrderListCntl(ConnectionCntl inputCNC, CustomerListCntl inputCLC, InventoryListCntl inputILC)
     {
+        CNC = inputCNC;
         CLC = inputCLC;
         ILC = inputILC;
     }

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 public class TransferListCntl 
 {
+    ConnectionCntl CNC;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     OrderListCntl OLC;
@@ -12,8 +13,9 @@ public class TransferListCntl
     
     TransferList TL = new TransferList();
     
-    public TransferListCntl(CustomerListCntl inputCLC, InventoryListCntl inputILC, OrderListCntl inputOLC)
+    public TransferListCntl(ConnectionCntl inputCNC, CustomerListCntl inputCLC, InventoryListCntl inputILC, OrderListCntl inputOLC)
     {
+        CNC = inputCNC;
         CLC = inputCLC;
         ILC = inputILC;
         OLC = inputOLC;

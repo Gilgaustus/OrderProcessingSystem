@@ -2,16 +2,16 @@ package order.processing.system;
 
 public class Inventory
 {
-    protected int InventoryID;
+    protected int inventoryID;
     protected String itemName;
     protected String description;
-    double Price;
-    protected int Quantity = 0;
+    double price;
+    protected int quantity = 0;
     
     //getters
     public int getID()
     {
-        return InventoryID;
+        return inventoryID;
     }
     
     public String getName()
@@ -27,17 +27,17 @@ public class Inventory
     
     public double getPrice()
     {
-        return Price;
+        return price;
     }
     
     public int getQuantity()
     {
-        return Quantity;
+        return quantity;
     }
     
     public void setID(int ID)
     {
-        InventoryID = ID;
+        inventoryID = ID;
     }
     
     public synchronized void setName(String Name)
@@ -55,11 +55,11 @@ public class Inventory
     
     public void setPrice(double price)
     {
-        Price = price;
+        this.price = price;
     }
     
     public void setQuantity(int quantity)
     {
-        Quantity = quantity;
+        this.quantity = quantity;
     }
 }

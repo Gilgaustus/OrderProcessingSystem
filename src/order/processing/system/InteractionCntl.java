@@ -1,16 +1,18 @@
 package order.processing.system;
 
 import java.util.Scanner;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class InteractionCntl extends Thread
 {    
-    InventoryListCntl ILC = new InventoryListCntl();
-    CustomerListCntl CLC = new CustomerListCntl(ILC);
-    OrderListCntl OLC = new OrderListCntl(CLC, ILC);
-    TransferListCntl TLC = new TransferListCntl(CLC, ILC, OLC);
-    
-    
+    ConnectionCntl CNC = new ConnectionCntl();
+    InventoryListCntl ILC = new InventoryListCntl(CNC);
+    CustomerListCntl CLC = new CustomerListCntl(CNC, ILC);
+    OrderListCntl OLC = new OrderListCntl(CNC, CLC, ILC);
+    TransferListCntl TLC = new TransferListCntl(CNC, CLC, ILC, OLC);
     Scanner in = new Scanner(System.in);   
+    
     public InteractionCntl()
     {
         CLC.testCL();
@@ -249,6 +251,15 @@ public class InteractionCntl extends Thread
             for (int i = 0; i < threadMaker.length; i++) 
             {
                 threadMaker[i].start();
+            }
+            
+            for (int i = 0; i < threadMaker.length; i++) 
+            {
+                try {
+                    threadMaker[i].join();
+                } catch (InterruptedException ex) {
+                    Logger.getLogger(InteractionCntl.class.getName()).log(Level.SEVERE, null, ex);
+                }
             }
             
             System.out.println("Thread count: " + Thread.activeCount());

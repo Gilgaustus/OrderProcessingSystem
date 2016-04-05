@@ -2,10 +2,6 @@ package order.processing.system;
 
 import java.security.SecureRandom;
 import java.util.ArrayList;
-import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
-
 
 public class CustomerListCntl
 {
@@ -14,9 +10,11 @@ public class CustomerListCntl
     private int customerID = 0;
     SecureRandom rn;
     protected InventoryListCntl ILC;
+    protected ConnectionCntl CNC;
     
-    public CustomerListCntl(InventoryListCntl inputILC)
+    public CustomerListCntl(ConnectionCntl inputCNC, InventoryListCntl inputILC)
     {
+        CNC = inputCNC;
         ILC = inputILC;
         rn = new SecureRandom();
         invID = rn.nextInt(2);
