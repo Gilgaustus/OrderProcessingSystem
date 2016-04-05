@@ -1,8 +1,10 @@
 package order.processing.system;
 
+import java.sql.SQLException;
+
 public class OrderProcessingSystem {
   
-    public static void  main(String[] args)  {
+    public static void  main(String[] args) throws SQLException  {
         
         InteractionCntl interactionCntl = new InteractionCntl();
         synchronized(interactionCntl)
