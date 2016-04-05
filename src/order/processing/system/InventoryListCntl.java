@@ -17,14 +17,9 @@ public class InventoryListCntl extends Transaction
         CNC = inputCNC;
     }
    
-    public synchronized void addItem(Inventory newItem)
+    public void addItem(Inventory newItem)
     {
-        try{
-            Thread.sleep(4000);
-        }catch(InterruptedException e)
-        {}
         this.getIL().add(newItem);
-        
     }
     
     public ArrayList<Inventory> getIL()
@@ -32,7 +27,7 @@ public class InventoryListCntl extends Transaction
        return IL.InventoryList;
     }
     
-    public synchronized void deleteItem(int index)
+    public void deleteItem(int index)
     {
     
         try{
@@ -72,19 +67,22 @@ public class InventoryListCntl extends Transaction
         
         return this.getIL().get(index).getID();
     }
-    //don't know if these "need" synchronized, if no item is there the protection exists.
+    
     public String getItemName(int index)
     {
         return this.getIL().get(index).itemName;
     } 
+    
     public String getItemDescription(int index)
     {
         return this.getIL().get(index).description;
     }
+    
     public double getItemPrice(int index)
     {
         return this.getIL().get(index).price;
     }
+    
     public int getItemQuantity(int index)
     {
         return this.getIL().get(index).quantity;

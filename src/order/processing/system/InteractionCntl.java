@@ -1,5 +1,6 @@
 package order.processing.system;
 
+import java.sql.SQLException;
 import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -13,7 +14,7 @@ public class InteractionCntl extends Thread
     TransferListCntl TLC = new TransferListCntl(CNC, CLC, ILC, OLC);
     Scanner in = new Scanner(System.in);   
     
-    public InteractionCntl()
+    public InteractionCntl() throws SQLException
     {
         CLC.testCL();
         ILC.initInvList();
