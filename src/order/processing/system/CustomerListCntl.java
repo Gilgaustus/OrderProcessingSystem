@@ -1,6 +1,7 @@
 package order.processing.system;
 
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerListCntl
@@ -38,7 +39,7 @@ public class CustomerListCntl
         }
     }
     
-    public void addToCustomerCart(int customerIndex, int itemID)
+    public void addToCustomerCart(int customerIndex, int itemID) throws SQLException
     {
         System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " adding Item " + ILC.getIL().get(itemID).getName());
 
@@ -66,7 +67,7 @@ public class CustomerListCntl
             System.out.println("Item not available.");
     }
     
-    public void removeFromCustomerCart(int customerIndex, int itemID)
+    public void removeFromCustomerCart(int customerIndex, int itemID) throws SQLException
     {
         System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID).getName());
       

@@ -20,7 +20,7 @@ public class InteractionCntl extends Thread
         ILC.initInvList();
     }
     
-    public void welcomeProtocol()
+    public void welcomeProtocol() throws SQLException
     {
          
         System.out.println("Welcome to the Order Proc System!");
@@ -53,7 +53,7 @@ public class InteractionCntl extends Thread
         return selection;
     }
     
-    public void displaySelection(int selection)
+    public void displaySelection(int selection) throws SQLException
     {
         //we want scanner to clear after clearing menu so each is declared in a method
         in = new Scanner(System.in);

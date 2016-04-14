@@ -107,10 +107,10 @@ public class InventoryListCntl extends Transaction
         
     }
     
-    public void setItemQuantity(int index, int quantity)
+    public void setItemQuantity(int index, int quantity) throws SQLException
     { 
         this.getIL().get(index).setQuantity(quantity);
-        
+        CNC.ChangeInventoryData(index, quantity);
     }
     
     public void displayInvList()
