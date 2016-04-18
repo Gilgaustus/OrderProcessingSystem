@@ -1,5 +1,6 @@
 package order.processing.system;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -15,7 +16,7 @@ public class Cart
         cartContents.add(inv);
     }
     
-    public void removeFromCart (int cartItemID)
+    public void removeFromCart (int cartItemID) throws SQLException
     {
         ILC.setItemQuantity(cartContents.get(cartItemID).getID(), (ILC.getItemQuantity(cartContents.get(cartItemID).getID()))-1);
         subtotal = subtotal - ILC.getItemPrice(cartContents.get(cartItemID).getID());

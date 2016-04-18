@@ -1,9 +1,11 @@
 package order.processing.system;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class TransferListCntl 
 {
+    ConnectionCntl CNC;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     OrderListCntl OLC;
@@ -12,14 +14,15 @@ public class TransferListCntl
     
     TransferList TL = new TransferList();
     
-    public TransferListCntl(CustomerListCntl inputCLC, InventoryListCntl inputILC, OrderListCntl inputOLC)
+    public TransferListCntl(ConnectionCntl inputCNC, CustomerListCntl inputCLC, InventoryListCntl inputILC, OrderListCntl inputOLC)
     {
+        CNC = inputCNC;
         CLC = inputCLC;
         ILC = inputILC;
         OLC = inputOLC;
     }
     
-    public void createTransfer(int orderReference, int returningItemIndex, int newItemIndex)    
+    public void createTransfer(int orderReference, int returningItemIndex, int newItemIndex) throws SQLException    
     {
         Transfer newTransfer = new Transfer(OLC.getOrderList().get(orderReference).getCart().getCartList().get(returningItemIndex), ILC.getIL().get(newItemIndex));
         newTransfer.setTransferID(transferID);
@@ -30,7 +33,7 @@ public class TransferListCntl
         this.addTransfer(newTransfer);
     }
     
-    void process(int returningItem, int newItem)
+    void process(int returningItem, int newItem) throws SQLException
     {
         int quantity = ILC.getIL().get(newItem).getQuantity()-1;
         ILC.setItemQuantity(newItem, quantity);

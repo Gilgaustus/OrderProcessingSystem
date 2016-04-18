@@ -1,10 +1,11 @@
 package order.processing.system;
 
 import java.security.SecureRandom;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class ThreadMaker extends Thread
+public class ThreadMaker extends Thread 
 {
     CustomerListCntl CLC;
     InventoryListCntl ILC;
@@ -24,7 +25,7 @@ public class ThreadMaker extends Thread
         invID = theInvID;
     }
     
-    public void run()
+    public void run() 
     {
         
         synchronized(ILC.getIL().get(invID))
@@ -33,7 +34,11 @@ public class ThreadMaker extends Thread
             {   
                 if(invID == ILC.getItemID(i))
                 {
-                    CLC.addToCustomerCart(customerID, invID);
+                    try {
+                        CLC.addToCustomerCart(customerID, invID);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ThreadMaker.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     System.out.println("Inventory: ");
                     ILC.displayInvList();
                 }
@@ -49,7 +54,11 @@ public class ThreadMaker extends Thread
             {   
             if(invID == ILC.getItemID(i))
                 {
+                try {
                     CLC.addToCustomerCart(customerID, invID);
+                } catch (SQLException ex) {
+                    Logger.getLogger(ThreadMaker.class.getName()).log(Level.SEVERE, null, ex);
+                }
                     System.out.println("Inventory: ");
                     ILC.displayInvList();
                 }
@@ -66,7 +75,11 @@ public class ThreadMaker extends Thread
             {   
                 if(invID == ILC.getItemID(i))
                 {
-                    CLC.addToCustomerCart(customerID, invID);
+                    try {
+                        CLC.addToCustomerCart(customerID, invID);
+                    } catch (SQLException ex) {
+                        Logger.getLogger(ThreadMaker.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     ILC.displayInvList();
                 }
             }
@@ -78,7 +91,11 @@ public class ThreadMaker extends Thread
         invID = rn.nextInt(2);
         synchronized(ILC.getIL().get(invID))
         {
-            CLC.removeFromCustomerCart(customerID, invID);
+            try {
+                CLC.removeFromCustomerCart(customerID, invID);
+            } catch (SQLException ex) {
+                Logger.getLogger(ThreadMaker.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("Inventory: ");
             ILC.displayInvList();
         }
@@ -88,7 +105,11 @@ public class ThreadMaker extends Thread
         invID = rn.nextInt(2);
         synchronized(ILC.getIL().get(invID))
         {
-            CLC.removeFromCustomerCart(customerID, invID);
+            try {
+                CLC.removeFromCustomerCart(customerID, invID);
+            } catch (SQLException ex) {
+                Logger.getLogger(ThreadMaker.class.getName()).log(Level.SEVERE, null, ex);
+            }
             System.out.println("Inventory: ");
             ILC.displayInvList();
         }
