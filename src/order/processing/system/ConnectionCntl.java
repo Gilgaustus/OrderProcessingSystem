@@ -64,11 +64,15 @@ public class ConnectionCntl
     {
         Connection conn = ConnectionToMySql();
         conn.setReadOnly(false);
-        Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
-        ResultSet rs = stmt.executeQuery("SELECT * FROM Inventory WHERE PK_InventoryID = " + inputInventoryID);
+        //Statement stmt = conn.createStatement(ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_UPDATABLE);
+        //ResultSet rs = stmt.executeQuery("SELECT * FROM Inventory WHERE PK_InventoryID = " + inputInventoryID);
+        PreparedStatement pstmt = conn.prepareStatement("UPDATE Inventory SET Quantity = ? WHERE PK_InventoryID = " + inputInventoryID);
         
-        rs.updateInt("Quantity", quantity);
-        rs.updateRow();
+        pstmt.setInt(1, quantity);
+        
+        pstmt.executeUpdate();
+        //rs.updateInt(4, quantity);
+        //rs.updateRow();
         
         conn.close();
     }
