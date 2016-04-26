@@ -18,3 +18,17 @@ nbproject/project.properties
 nbproject/project.xml
 nbproject/private/private.properties
 nbproject/private/private.xml
+build/classes/order/processing/system/AuthenticationCntl.class
+build/classes/order/processing/system/InteractionUI$1.class
+build/classes/order/processing/system/InteractionUI.class
+build/classes/order/processing/system/InteractionUI.form
+build/classes/order/processing/system/InventoryTableModel.class
+build/classes/order/processing/system/LoginUI$1.class
+build/classes/order/processing/system/LoginUI$2.class
+build/classes/order/processing/system/LoginUI$3.class
+build/classes/order/processing/system/LoginUI$4.class
+build/classes/order/processing/system/LoginUI$5.class
+build/classes/order/processing/system/LoginUI.class
+build/classes/order/processing/system/LoginUI.form
+src/order/processing/system/InteractionUI.form
+src/order/processing/system/LoginUI.form

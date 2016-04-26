@@ -1,5 +1,7 @@
 package order.processing.system;
 
+import java.sql.SQLException;
+
 public class Customer 
 {
     protected int customerID;
@@ -27,7 +29,7 @@ public class Customer
         theCart.addToCart(Item);
     }
     
-    public void removeFromCart (int cartItemID)
+    public void removeFromCart (int cartItemID) throws SQLException
     {
         theCart.removeFromCart(cartItemID);
     }

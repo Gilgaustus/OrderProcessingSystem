@@ -243,11 +243,11 @@ public class InteractionCntl extends Thread
             int theThreads = 5;
             
             Thread[] threadMaker = new ThreadMaker[theThreads];
-            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0, 0);
-            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1, 2);
-            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC, 2, 1);
-            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC, 3, 0);
-            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC, 4, 2);
+            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC);
+            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC);
+            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC);
+            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC);
+            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC);
             
             for (int i = 0; i < threadMaker.length; i++) 
             {

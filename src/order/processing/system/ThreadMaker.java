@@ -7,27 +7,26 @@ import java.util.logging.Logger;
 
 public class ThreadMaker extends Thread 
 {
+    AuthenticationCntl authCntl;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     OrderListCntl OLC;
     TransferListCntl TLC;
-    int customerID;
-    int invID;
     SecureRandom rn = new SecureRandom();
     
-    ThreadMaker(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC, int theCustomerID, int theInvID)
+    ThreadMaker(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC)
     {
         CLC = theCLC;
         ILC = theILC;
         OLC = theOLC;
         TLC = theTLC;
-        customerID = theCustomerID;
-        invID = theInvID;
     }
     
     public void run() 
     {
-        
+       
+        authCntl = new AuthenticationCntl(CLC);
+        /*
         synchronized(ILC.getIL().get(invID))
         {
             for(int i = 0; i < ILC.getIL().size(); i++)
@@ -45,7 +44,7 @@ public class ThreadMaker extends Thread
             }
         } 
         Thread.yield();
-           
+        
         
         invID = rn.nextInt(2);
         synchronized(ILC.getIL().get(invID))
@@ -120,5 +119,6 @@ public class ThreadMaker extends Thread
         OLC.createOrder(CLC, ILC, customerID, CLC.getCustomerCart(customerID), 1.00, CLC.getCustomerShipingAddress(customerID), CLC.getCustomerBillingAddress(customerID));
         OLC.showCustomerOrder(customerID);
         System.out.println("End order.");
+                */
     }
 }
