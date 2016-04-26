@@ -48,9 +48,9 @@ public class InteractionUI extends javax.swing.JFrame
         addToCartButton = new javax.swing.JButton();
         viewCartButton = new javax.swing.JButton();
         transferButton = new javax.swing.JButton();
-        returnButton = new javax.swing.JButton();
         orderButton = new javax.swing.JButton();
         closeButton = new javax.swing.JButton();
+        viewOrderButton = new javax.swing.JButton();
 
         jMenuItem1.setText("jMenuItem1");
 
@@ -109,13 +109,6 @@ public class InteractionUI extends javax.swing.JFrame
             }
         });
 
-        returnButton.setText("Return");
-        returnButton.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                returnButtonActionPerformed(evt);
-            }
-        });
-
         orderButton.setText("Order");
         orderButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
@@ -130,24 +123,31 @@ public class InteractionUI extends javax.swing.JFrame
             }
         });
 
+        viewOrderButton.setText("View Order");
+        viewOrderButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                viewOrderButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addGap(100, 100, 100)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                     .addGroup(layout.createSequentialGroup()
-                        .addComponent(returnButton)
+                        .addComponent(viewOrderButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addComponent(transferButton)
-                        .addGap(122, 122, 122)
-                        .addComponent(orderButton))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(transferButton))
+                    .addGroup(layout.createSequentialGroup()
                         .addComponent(viewCartButton)
+                        .addGap(107, 107, 107)
+                        .addComponent(orderButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(addToCartButton))
-                    .addComponent(jPanel1, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 42, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(41, Short.MAX_VALUE))
@@ -163,14 +163,15 @@ public class InteractionUI extends javax.swing.JFrame
                         .addContainerGap()
                         .addComponent(closeButton)))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(viewCartButton)
-                    .addComponent(addToCartButton))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(returnButton)
-                    .addComponent(transferButton)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                        .addComponent(viewCartButton)
+                        .addComponent(addToCartButton))
                     .addComponent(orderButton))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(transferButton)
+                    .addComponent(viewOrderButton))
                 .addContainerGap(18, Short.MAX_VALUE))
         );
 
@@ -181,9 +182,9 @@ public class InteractionUI extends javax.swing.JFrame
         intCntl.showCustomerCartUI(customerID);
     }//GEN-LAST:event_viewCartButtonActionPerformed
 
-    private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
+    private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_returnButtonActionPerformed
+    }//GEN-LAST:event_transferButtonActionPerformed
 
     private void addToCartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartButtonActionPerformed
         int selectedTableRow = inventoryTable.getSelectedRow();
@@ -195,17 +196,23 @@ public class InteractionUI extends javax.swing.JFrame
         }
     }//GEN-LAST:event_addToCartButtonActionPerformed
 
-    private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_transferButtonActionPerformed
-
     private void orderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderButtonActionPerformed
-        // TODO add your handling code here:
+        try {
+            intCntl.placeOrder(customerID);
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(InteractionUI.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(InteractionUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_orderButtonActionPerformed
 
     private void closeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_closeButtonActionPerformed
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
+
+    private void viewOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOrderButtonActionPerformed
+        
+    }//GEN-LAST:event_viewOrderButtonActionPerformed
 
     /**
      * @param args the command line arguments
@@ -226,8 +233,8 @@ public class InteractionUI extends javax.swing.JFrame
     private javax.swing.JRadioButtonMenuItem jRadioButtonMenuItem1;
     private javax.swing.JScrollPane jScrollPane2;
     private javax.swing.JButton orderButton;
-    private javax.swing.JButton returnButton;
     private javax.swing.JButton transferButton;
     private javax.swing.JButton viewCartButton;
+    private javax.swing.JButton viewOrderButton;
     // End of variables declaration//GEN-END:variables
 }

@@ -5,6 +5,10 @@
  */
 package order.processing.system;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Gilberto
@@ -13,12 +17,14 @@ public class CartUI extends javax.swing.JFrame {
 
     CustomerListCntl CLC;
     CartTableModel CTM;
+    int customerID;
     
     
-    public CartUI(CustomerListCntl inputCLC, CartTableModel inputCTM, int customerID) 
+    public CartUI(CustomerListCntl inputCLC, int inputCustomerID) 
     {
         CLC = inputCLC;
-        CTM = inputCTM;
+        customerID = inputCustomerID;
+        CTM = new CartTableModel(CLC, customerID);
         initComponents();
         subtotalField.setEditable(false);
         subtotalField.setText(String.valueOf(CLC.getCustomerCart(customerID).getSubtotal()));
@@ -34,15 +40,16 @@ public class CartUI extends javax.swing.JFrame {
     private void initComponents() {
 
         jScrollPane1 = new javax.swing.JScrollPane();
-        jTable1 = new javax.swing.JTable();
+        cartTable = new javax.swing.JTable();
         closeButton = new javax.swing.JButton();
         subtotalLabel = new javax.swing.JLabel();
         subtotalField = new javax.swing.JTextField();
+        removeButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        jTable1.setModel(CTM);
-        jScrollPane1.setViewportView(jTable1);
+        cartTable.setModel(CTM);
+        jScrollPane1.setViewportView(cartTable);
 
         closeButton.setText("Close");
         closeButton.addActionListener(new java.awt.event.ActionListener() {
@@ -60,6 +67,13 @@ public class CartUI extends javax.swing.JFrame {
             }
         });
 
+        removeButton.setText("Remove");
+        removeButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                removeButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -71,6 +85,8 @@ public class CartUI extends javax.swing.JFrame {
                         .addComponent(subtotalLabel)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(subtotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(55, 55, 55)
+                        .addComponent(removeButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
                         .addComponent(closeButton))
                     .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE))
@@ -85,7 +101,8 @@ public class CartUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(closeButton)
                     .addComponent(subtotalLabel)
-                    .addComponent(subtotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(subtotalField, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(removeButton))
                 .addContainerGap(20, Short.MAX_VALUE))
         );
 
@@ -100,15 +117,28 @@ public class CartUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
+    private void removeButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_removeButtonActionPerformed
+        int selectedTableRow = cartTable.getSelectedRow();
+        int selectedModelRow = cartTable.convertRowIndexToModel(selectedTableRow);
+        try {
+            CLC.removeFromCustomerCart(customerID, CLC.getCustomerCart(customerID).getCartList().get(selectedModelRow).getID());
+        } catch (SQLException ex) {
+            Logger.getLogger(CartUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        CTM = new CartTableModel(CLC, customerID);
+        cartTable.setModel(CTM);
+    }//GEN-LAST:event_removeButtonActionPerformed
+
     /**
      * @param args the command line arguments
      */
     
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JTable cartTable;
     private javax.swing.JButton closeButton;
     private javax.swing.JScrollPane jScrollPane1;
-    private javax.swing.JTable jTable1;
+    private javax.swing.JButton removeButton;
     private javax.swing.JTextField subtotalField;
     private javax.swing.JLabel subtotalLabel;
     // End of variables declaration//GEN-END:variables

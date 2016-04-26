@@ -1,15 +1,13 @@
 package order.processing.system;
 
-import java.security.SecureRandom;
 import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class CustomerListCntl
 {
     protected CustomerList theCustomerList = new CustomerList();
-    int invID;
+    
     private int customerID = 0;
-    SecureRandom rn;
     protected InventoryListCntl ILC;
     protected ConnectionCntl CNC;
     CartTableModel CTM;
@@ -18,8 +16,6 @@ public class CustomerListCntl
     {
         CNC = inputCNC;
         ILC = inputILC;
-        rn = new SecureRandom();
-        invID = rn.nextInt(2);
     }
     
     public void addCustomer(Customer newCustomer)
@@ -43,62 +39,66 @@ public class CustomerListCntl
     public void addToCustomerCart(int customerIndex, int itemID) throws SQLException
     {
         System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " adding Item " + ILC.getIL().get(itemID).getName());
-
-        int index;
-        int quantity = ILC.getIL().get(itemID).getQuantity();
-        double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
-        if(quantity != 0)
+        synchronized(ILC.getIL().get(itemID))
         {
-            this.getCustomerCart(customerIndex).getCartList().add(ILC.getIL().get(itemID));
-            for(int i = 0; i < ILC.getIL().size(); i++)
-            {   
-                if(ILC.getIL().get(itemID).equals(ILC.getIL().get(i)))
-                {
-                    quantity--;
-                    index = i;
+            int index;
+            int quantity = ILC.getIL().get(itemID).getQuantity();
+            double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
+            if(quantity != 0)
+            {
+                this.getCustomerCart(customerIndex).getCartList().add(ILC.getIL().get(itemID));
+                for(int i = 0; i < ILC.getIL().size(); i++)
+                {   
+                    if(ILC.getIL().get(itemID).equals(ILC.getIL().get(i)))
+                    {
+                        quantity--;
+                        index = i;
                    
-                    ILC.setItemQuantity(index, quantity);
-                    subtotal = subtotal + ILC.getItemPrice(index);
-                    this.getCustomerCart(customerIndex).setSubtotal(subtotal);
-                    System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " added Item " + ILC.getIL().get(itemID).getName());
+                        ILC.setItemQuantity(index, quantity);
+                        subtotal = subtotal + ILC.getItemPrice(index);
+                        this.getCustomerCart(customerIndex).setSubtotal(subtotal);
+                        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " added Item " + ILC.getIL().get(itemID).getName());
+                    }
                 }
             }
+            else
+                System.out.println("Item not available.");
         }
-        else
-            System.out.println("Item not available.");
     }
     
     public void removeFromCustomerCart(int customerIndex, int itemID) throws SQLException
     {
-        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID).getName());
-      
-        int index;
-        int quantity = ILC.getIL().get(itemID).getQuantity();
-        boolean changeInCart = false;
-        double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
-        if (this.getCustomerCart(customerIndex).getCartList().size() > 0)
+        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID-1).getName());
+        synchronized(ILC.getIL().get(itemID-1))
         {
-            for (int i = 0; i < this.getCustomerCart(customerIndex).getCartList().size(); i++)
+            int index;
+            int quantity = ILC.getIL().get(itemID-1).getQuantity();
+            boolean changeInCart = false;
+            double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
+            if (this.getCustomerCart(customerIndex).getCartList().size() > 0)
             {
-                if (itemID == this.getCustomerCart(customerIndex).getCartList().get(i).getID())
+                for (int i = 0; i < this.getCustomerCart(customerIndex).getCartList().size(); i++)
                 {
-                    index = this.getCustomerCart(customerIndex).getCartList().get(i).getID();
-                    this.getCustomerCart(customerIndex).getCartList().remove(i);
-                    changeInCart = true;
-                    quantity++;
+                    if (itemID == this.getCustomerCart(customerIndex).getCartList().get(i).getID())
+                    {
+                        index = this.getCustomerCart(customerIndex).getCartList().get(i).getID()-1;
+                        this.getCustomerCart(customerIndex).getCartList().remove(i);
+                        changeInCart = true;
+                        quantity++;
                     
-                    ILC.setItemQuantity(index, quantity);
-                    subtotal = subtotal - ILC.getItemPrice(index);
-                    this.getCustomerCart(customerIndex).setSubtotal(subtotal);
-                    System.out.println("Removed item from cart.");
-                    break;
+                        ILC.setItemQuantity(index, quantity);
+                        subtotal = subtotal - ILC.getItemPrice(index);
+                        this.getCustomerCart(customerIndex).setSubtotal(subtotal);
+                        System.out.println("Removed item from cart.");
+                        break;
+                    }
                 }
-            }
-            if (!changeInCart) 
-                System.out.println("No such item in cart.");
-        } 
-        else
-            System.out.println("No items in cart.");
+                if (!changeInCart) 
+                    System.out.println("No such item in cart.");
+            } 
+            else
+                System.out.println("No items in cart.");
+        }
     }
     
     
@@ -128,8 +128,7 @@ public class CustomerListCntl
     
     public void showCartUI(int customerID)
     {
-        CTM = new CartTableModel(this, customerID);
-        CartUI cartUI = new CartUI(this, CTM, customerID);
+        CartUI cartUI = new CartUI(this, customerID);
         cartUI.setVisible(true);
     }
     

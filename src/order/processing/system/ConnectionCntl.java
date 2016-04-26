@@ -135,19 +135,18 @@ public class ConnectionCntl
         conn.close();
     }
     
-    public synchronized static void AddOrderData(Order inputOrder) throws ClassNotFoundException, SQLException
+    public static void AddOrderData(Order inputOrder) throws ClassNotFoundException, SQLException
     {
         Connection conn = ConnectionToMySql();
         conn.setReadOnly(false);
     
         for(int i = 0; i < inputOrder.getCart().getCartList().size(); i++)
         {
-            String sql = "INSERT INTO `order`(`PK_OrderID`, `FK_InventoryID`, `FK_CustomerID`, `ShippingAddress`, `BillingAddress`) VALUES (" + inputOrder.getOrderID() + "," + inputOrder.getCart().getCartList().get(i).getID()+","+ inputOrder.getCustomerID() + ",'" + inputOrder.getShippingAddress() + "','" + inputOrder.getBillingAddress() +"'"+ " ) ";
+            String sql = "INSERT INTO `Orders`(`PK_OrderID`, `FK_InventoryID`, `FK_CustomerID`, `ShippingAddress`, `BillingAddress`) VALUES (" + inputOrder.getOrderID() + "," + inputOrder.getCart().getCartList().get(i).getID()+","+ inputOrder.getCustomerID() + ",'" + inputOrder.getShippingAddress() + "','" + inputOrder.getBillingAddress() +"'"+ " ) ";
             System.out.println("SQL: "+ sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         }
-        
         conn.close();
     }
     
@@ -155,16 +154,12 @@ public class ConnectionCntl
     {
         Connection conn = ConnectionToMySql();
         conn.setReadOnly(false);
-    
-        
   
         String sql = "INSERT INTO `transfer`(`PK_TransferID`,`FK_OrderID`, `FK_CustomerID`) VALUES ("+inputTransferListCntl.getTransferList().indexOf(inputTransfer)+","+inputTransfer.getReferencedOrderID()+","+inputTransfer.getTransferCustomerID()+")";
         System.out.println("SQL: "+ sql);
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.executeUpdate();
       
-       // transferKey++;
-        
         conn.close();
     }
 }

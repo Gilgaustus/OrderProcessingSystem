@@ -50,22 +50,11 @@ public class InventoryListCntl extends Transaction
     //getters
      public Inventory getItem(int index)
     {  
-        //This one doesn't sleep as otherwise, synch problems occur and item isn't added to cart so other items can get at it
-            //Thread.sleep(4000);
         return this.getIL().get(index);
     }
      
-    public synchronized int getItemID(int index)
+    public int getItemID(int index)
     {
-        
-        try
-        {
-            //not sure what number means
-            Thread.sleep(4000);
-        }catch(InterruptedException e)
-        {
-        }
-        
         return this.getIL().get(index).getID();
     }
     

@@ -19,7 +19,7 @@ public class OrderListCntl
         ILC = inputILC;
     }
     
-    public synchronized void createOrder(CustomerListCntl inputCLC, InventoryListCntl inputILC, int customerID, Cart inputCart, double inputPrice, String ISA, String BSA) throws ClassNotFoundException, SQLException    
+    public synchronized void createOrder(CustomerListCntl inputCLC, InventoryListCntl inputILC, int customerID, Cart inputCart, double inputPrice) throws ClassNotFoundException, SQLException    
     {
         
         System.out.println(Thread.currentThread().getName() + "created Order");
@@ -27,8 +27,8 @@ public class OrderListCntl
         
         O.setOrderID(orderID);
         O.setCustomerID(customerID);
-        O.setBillingAddr(BSA);
-        O.setShippingAddr(ISA);
+        O.setBillingAddr(CLC.getCustomerBillingAddress(customerID));
+        O.setShippingAddr(CLC.getCustomerShipingAddress(customerID));
         O.setShippingPrice(inputPrice);
         O.setCart(inputCart);
         O.getCart().printContents();
@@ -45,7 +45,7 @@ public class OrderListCntl
         {
             System.out.println(Thread.currentThread() + "'s cart is empty");
         }
-        
+        CLC.getCustomerCart(customerID).getCartList().clear();
     }
     
     public ArrayList<Order> getOrderList()

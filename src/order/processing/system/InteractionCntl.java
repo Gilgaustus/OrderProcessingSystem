@@ -259,6 +259,11 @@ public class InteractionCntl extends Thread
         CLC.addToCustomerCart(customerID, itemID);
     }
     
+    public void placeOrder(int customerID) throws ClassNotFoundException, SQLException
+    {
+        OLC.createOrder(CLC, ILC, customerID, CLC.getCustomerCart(customerID), 2.0);
+    }
+    
     public void run()
     {
         synchronized(this)

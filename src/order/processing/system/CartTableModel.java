@@ -5,7 +5,7 @@ import javax.swing.table.AbstractTableModel;
 
 public class CartTableModel extends AbstractTableModel
 {
-    private static String[] columnNames = {"ID", "Name", "Description", "Price", "Quantity"};
+    private static String[] columnNames = {"ID", "Name", "Description", "Price"};
     private CustomerListCntl CLC;
     private ArrayList<Inventory> cartTableData;
     
@@ -46,11 +46,13 @@ public class CartTableModel extends AbstractTableModel
             case 3: 
                 objectToReturn = cartTableData.get(row).getPrice();
                 break;
-            case 4: 
-                objectToReturn = cartTableData.get(row).getQuantity();
-                break;
         }
         return objectToReturn;
+    }
+    
+    public Inventory getItem(int itemPosition)
+    {
+        return cartTableData.get(itemPosition);
     }
     
 }
