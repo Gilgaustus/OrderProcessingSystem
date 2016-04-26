@@ -48,6 +48,12 @@ public class InventoryListCntl extends Transaction
             
     }
     
+    public void showInventoryUI(int customerID)
+    {
+        InventoryUI invUI = new InventoryUI(this, customerID);
+        invUI.setVisible(true);
+    }
+    
     //getters
      public Inventory getItem(int index)
     {  

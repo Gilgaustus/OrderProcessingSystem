@@ -32,3 +32,17 @@ build/classes/order/processing/system/LoginUI.class
 build/classes/order/processing/system/LoginUI.form
 src/order/processing/system/InteractionUI.form
 src/order/processing/system/LoginUI.form
+build/classes/order/processing/system/CartTableModel.class
+build/classes/order/processing/system/CartUI$1.class
+build/classes/order/processing/system/CartUI.class
+build/classes/order/processing/system/CartUI.form
+build/classes/order/processing/system/InventoryUI$1.class
+build/classes/order/processing/system/InventoryUI$2.class
+build/classes/order/processing/system/InventoryUI$3.class
+build/classes/order/processing/system/InventoryUI$4.class
+build/classes/order/processing/system/InventoryUI$5.class
+build/classes/order/processing/system/InventoryUI$6.class
+build/classes/order/processing/system/InventoryUI.class
+build/classes/order/processing/system/InventoryUI.form
+src/order/processing/system/CartUI.form
+src/order/processing/system/InventoryUI.form

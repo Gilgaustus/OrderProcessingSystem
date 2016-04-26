@@ -9,10 +9,16 @@ public class Transfer extends Transaction
     int transferCustomerID;
     int referenceOrderID;
     
-    public Transfer(Inventory newInvToReturn, Inventory newInvToGet)
+    InventoryListCntl ILC;
+    CustomerListCntl CLC;
+    
+    
+    public Transfer(Inventory newInvToReturn, Inventory newInvToGet, InventoryListCntl inputILC, CustomerListCntl inputCLC)
     {
         invToReturn = newInvToReturn;
         invToGet = newInvToGet;
+        //ILC = inputILC;
+        //CLC = inputCLC;
     }
     
     public void setTransferID(int newTransferID)

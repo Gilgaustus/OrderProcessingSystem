@@ -7,25 +7,27 @@ import java.util.logging.Logger;
 
 public class ThreadMaker extends Thread 
 {
-    AuthenticationCntl authCntl;
+    //AuthenticationCntl authCntl;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     OrderListCntl OLC;
     TransferListCntl TLC;
+    int customerID;
     SecureRandom rn = new SecureRandom();
     
-    ThreadMaker(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC)
+    ThreadMaker(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC, int inputCustomerID)
     {
         CLC = theCLC;
         ILC = theILC;
         OLC = theOLC;
         TLC = theTLC;
+        customerID = inputCustomerID;
     }
     
     public void run() 
     {
-       
-        authCntl = new AuthenticationCntl(CLC);
+       ILC.showInventoryUI(customerID);
+        
         /*
         synchronized(ILC.getIL().get(invID))
         {

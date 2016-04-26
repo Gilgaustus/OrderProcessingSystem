@@ -1,5 +1,6 @@
 package order.processing.system;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 public class OrderListCntl 
@@ -18,8 +19,10 @@ public class OrderListCntl
         ILC = inputILC;
     }
     
-    public synchronized void createOrder(CustomerListCntl inputCLC, InventoryListCntl inputILC, int customerID, Cart inputCart, double inputPrice, String ISA, String BSA)    
+    public synchronized void createOrder(CustomerListCntl inputCLC, InventoryListCntl inputILC, int customerID, Cart inputCart, double inputPrice, String ISA, String BSA) throws ClassNotFoundException, SQLException    
     {
+        
+        System.out.println(Thread.currentThread().getName() + "created Order");
         Order O = new Order(inputCLC, inputILC);
         
         O.setOrderID(orderID);
@@ -28,20 +31,32 @@ public class OrderListCntl
         O.setShippingAddr(ISA);
         O.setShippingPrice(inputPrice);
         O.setCart(inputCart);
+        O.getCart().printContents();
         this.process();
         
         this.getOrderList().add(O);
-        System.out.println("Added order");
+        //buy return exchange
+        if(O.getCart().getCartList().size() != 0)
+        {
+            CNC.AddOrderData(O);
+            System.out.println("Added order");
+        }
+        else if(O.getCart().getCartList().size() == 0)
+        {
+            System.out.println(Thread.currentThread() + "'s cart is empty");
+        }
+        
     }
     
     public ArrayList<Order> getOrderList()
     {
         return OL.orderList;
     }
+   
     
-    public void getOrder(int index)
+    public Order getOrder(int index)
     {
-        this.getOrderList().get(index);
+        return this.getOrderList().get(index);
     }
     
     public void showCustomerOrder(int customerID)
@@ -67,6 +82,10 @@ public class OrderListCntl
         if(this.getOrderList().size() != 0)
         {
            this.getOrderList().set(index, order);
+        }
+        else if(this.getOrderList().size() == 0)
+        {
+            System.out.println(Thread.currentThread().getName() + " Doesn't have anything in the cart.");
         }
     }
     

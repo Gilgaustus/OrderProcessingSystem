@@ -196,7 +196,7 @@ public class InteractionCntl extends Thread
             
             if (decision == 4)
             {
-                OLC.createOrder(CLC, ILC, CLC.getCustomerID(0), CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0));
+                //OLC.createOrder(CLC, ILC, CLC.getCustomerID(0), CLC.getCustomerCart(0), shippingPrice, CLC.getCustomerShipingAddress(0), CLC.getCustomerShipingAddress(0));
                 OLC.process();
                 CLC.getCustomerList().get(0).getCart().cartContents.clear();
                // System.out.println("Order ID: "+ OLC.getOrderList().get(0).transactionID);
@@ -224,7 +224,7 @@ public class InteractionCntl extends Thread
             in = new Scanner (System.in);
             int exchangeItem = in.nextInt();
             
-            TLC.createTransfer(orderNumber, itemToReturn, exchangeItem);
+            //TLC.createTransfer(orderNumber, itemToReturn, exchangeItem);
             System.out.println("Transfer placed!");
             this.displaySelection(this.mainMenu());
         }
@@ -243,11 +243,11 @@ public class InteractionCntl extends Thread
             int theThreads = 5;
             
             Thread[] threadMaker = new ThreadMaker[theThreads];
-            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC);
-            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC);
-            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC);
-            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC);
-            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC);
+            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0);
+            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1);
+            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC, 2);
+            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC, 3);
+            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC, 4);
             
             for (int i = 0; i < threadMaker.length; i++) 
             {

@@ -107,11 +107,64 @@ public class ConnectionCntl
         }
         conn.close();
     }
+    
+    // Order database methods
+    public static void GetOrderData(CustomerListCntl inputCLC, InventoryListCntl inputILC, ArrayList<Order> inputOL) throws SQLException, ClassNotFoundException
+    {
+        Connection conn = ConnectionToMySql();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM order");
+        while (rs.next()) 
+        {
+            Order newOrder = new Order(inputCLC, inputILC);
+            int OrderID = rs.getInt("PK_OrderID");
+            int InvID  = rs.getInt("FK_InventoryID");
+            int CustomerID = rs.getInt("FK_CustomerID");
+            String ShippingAddress = rs.getString("ShippingAddress");
+            String BillingAddress = rs.getString("BillingAddress");
+            
+            newOrder.setOrderID(OrderID);
+            //should set inv Id of card lolz
+            newOrder.getCart().getCartList().get(InvID).setID(InvID);
+            newOrder.setCustomerID(CustomerID);
+            //should dynamically update to customer but for now we are  doing this
+            newOrder.setShippingAddr(ShippingAddress);
+            newOrder.setBillingAddr(BillingAddress);
+            inputOL.add(newOrder);
+        }
+        conn.close();
+    }
+    
+    public synchronized static void AddOrderData(Order inputOrder) throws ClassNotFoundException, SQLException
+    {
+        Connection conn = ConnectionToMySql();
+        conn.setReadOnly(false);
+    
+        for(int i = 0; i < inputOrder.getCart().getCartList().size(); i++)
+        {
+            String sql = "INSERT INTO `order`(`PK_OrderID`, `FK_InventoryID`, `FK_CustomerID`, `ShippingAddress`, `BillingAddress`) VALUES (" + inputOrder.getOrderID() + "," + inputOrder.getCart().getCartList().get(i).getID()+","+ inputOrder.getCustomerID() + ",'" + inputOrder.getShippingAddress() + "','" + inputOrder.getBillingAddress() +"'"+ " ) ";
+            System.out.println("SQL: "+ sql);
+            PreparedStatement pstmt = conn.prepareStatement(sql);
+            pstmt.executeUpdate();
+        }
+        
+        conn.close();
+    }
+    
+    public void AddTransferData(Transfer inputTransfer, TransferListCntl inputTransferListCntl) throws ClassNotFoundException, SQLException
+    {
+        Connection conn = ConnectionToMySql();
+        conn.setReadOnly(false);
+    
+        
+  
+        String sql = "INSERT INTO `transfer`(`PK_TransferID`,`FK_OrderID`, `FK_CustomerID`) VALUES ("+inputTransferListCntl.getTransferList().indexOf(inputTransfer)+","+inputTransfer.getReferencedOrderID()+","+inputTransfer.getTransferCustomerID()+")";
+        System.out.println("SQL: "+ sql);
+        PreparedStatement pstmt = conn.prepareStatement(sql);
+        pstmt.executeUpdate();
+      
+       // transferKey++;
+        
+        conn.close();
+    }
 }
-/*
-            inputIL.get(i).inventoryID = rs.getInt("PK_InventoryID");
-            inputIL.get(i).itemName = rs.getString("ItemName");
-            inputIL.get(i).description = rs.getString("Description");
-            inputIL.get(i).price = rs.getDouble("Price");
-            inputIL.get(i).quantity = rs.getInt("Quantity");
-*/
