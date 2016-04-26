@@ -20,16 +20,15 @@ public class Customer
     public Customer(InventoryListCntl inputILC)
     {
         ILC = inputILC;
-        theCart = new Cart();
+        theCart = new Cart(ILC);
     }
     
-    public synchronized void addToCart (Inventory Item, InventoryListCntl inputILC)
+    public synchronized void addToCart (Inventory Item)
     {
-        ILC = inputILC;
         theCart.addToCart(Item);
     }
     
-    public void removeFromCart (int cartItemID) throws SQLException
+    public void removeFromCart (int cartItemID)
     {
         theCart.removeFromCart(cartItemID);
     }

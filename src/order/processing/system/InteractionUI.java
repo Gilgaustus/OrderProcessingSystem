@@ -5,17 +5,23 @@
  */
 package order.processing.system;
 
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 /**
  *
  * @author Gilberto
  */
-public class InventoryUI extends javax.swing.JFrame {
+public class InteractionUI extends javax.swing.JFrame 
+{
 
     int customerID;
-    InventoryListCntl ILC;
+    InteractionCntl intCntl;
     
-    public InventoryUI(InventoryListCntl inputILC, int inputCustomerID) {
-        ILC = inputILC;
+    public InteractionUI(InteractionCntl inputIntCntl, int inputCustomerID) 
+    {
+        intCntl = inputIntCntl;
         customerID = inputCustomerID;
         initComponents();
     }
@@ -63,7 +69,7 @@ public class InventoryUI extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
-        inventoryTable.setModel(ILC.getInventoryTableModel());
+        inventoryTable.setModel(intCntl.getInteractionTableModel());
         jScrollPane2.setViewportView(inventoryTable);
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
@@ -172,7 +178,7 @@ public class InventoryUI extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void viewCartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewCartButtonActionPerformed
-        // TODO add your handling code here:
+        intCntl.showCustomerCartUI(customerID);
     }//GEN-LAST:event_viewCartButtonActionPerformed
 
     private void returnButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_returnButtonActionPerformed
@@ -180,7 +186,13 @@ public class InventoryUI extends javax.swing.JFrame {
     }//GEN-LAST:event_returnButtonActionPerformed
 
     private void addToCartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedTableRow = inventoryTable.getSelectedRow();
+        int selectedModelRow = inventoryTable.convertRowIndexToModel(selectedTableRow);
+        try {
+            intCntl.addToCart(customerID, selectedModelRow);
+        } catch (SQLException ex) {
+            Logger.getLogger(InteractionUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_addToCartButtonActionPerformed
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed

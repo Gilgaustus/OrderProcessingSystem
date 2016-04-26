@@ -5,31 +5,35 @@ import javax.swing.table.*;
 import javax.swing.event.*;
 import java.util.*;
 
-public class InventoryTableModel extends AbstractTableModel
+public class InteractionTableModel extends AbstractTableModel
 {
     private static String[] columnNames = {"ID", "Name", "Description", "Price", "Quantity"};
-    private InventoryListCntl theILC;
+    private InventoryListCntl ILC;
     private ArrayList<Inventory> inventoryTableData;
     
-    public InventoryTableModel(InventoryListCntl inputILC)
+    public InteractionTableModel(InventoryListCntl inputILC)
     {
-        theILC = inputILC;
-        inventoryTableData = theILC.getIL();
+        ILC = inputILC;
+        inventoryTableData = ILC.getIL();
     }
     
-    public int getColumnCount() {
+    public int getColumnCount() 
+    {
         return columnNames.length;
     }
 
-    public int getRowCount() {
+    public int getRowCount() 
+    {
         return inventoryTableData.size();
     }
 
-    public String getColumnName(int col) {
+    public String getColumnName(int col) 
+    {
         return columnNames[col];
     }
 
-    public Object getValueAt(int row, int col) {
+    public Object getValueAt(int row, int col) 
+    {
         Object objectToReturn = new Object();
         switch(col){
             case 0: 
@@ -49,5 +53,10 @@ public class InventoryTableModel extends AbstractTableModel
                 break;
         }
         return objectToReturn;
+    }
+    
+    public Inventory getItem(int itemID)
+    {
+        return inventoryTableData.get(itemID);
     }
 }

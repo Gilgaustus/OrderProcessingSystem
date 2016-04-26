@@ -46,3 +46,10 @@ build/classes/order/processing/system/InventoryUI.class
 build/classes/order/processing/system/InventoryUI.form
 src/order/processing/system/CartUI.form
 src/order/processing/system/InventoryUI.form
+build/classes/order/processing/system/CartUI$2.class
+build/classes/order/processing/system/InteractionTableModel.class
+build/classes/order/processing/system/InteractionUI$2.class
+build/classes/order/processing/system/InteractionUI$3.class
+build/classes/order/processing/system/InteractionUI$4.class
+build/classes/order/processing/system/InteractionUI$5.class
+build/classes/order/processing/system/InteractionUI$6.class

@@ -11,15 +11,18 @@ public class Cart
     ArrayList<Inventory> cartContents = new ArrayList<>();
     double subtotal = 0;
     
+    public Cart(InventoryListCntl inputILC)
+    {
+        ILC = inputILC;
+    }
+    
     public void addToCart (Inventory inv)
     {       
         cartContents.add(inv);
     }
     
-    public void removeFromCart (int cartItemID) throws SQLException
+    public void removeFromCart (int cartItemID)
     {
-        ILC.setItemQuantity(cartContents.get(cartItemID).getID(), (ILC.getItemQuantity(cartContents.get(cartItemID).getID()))-1);
-        subtotal = subtotal - ILC.getItemPrice(cartContents.get(cartItemID).getID());
         cartContents.remove(cartItemID);
     }
     

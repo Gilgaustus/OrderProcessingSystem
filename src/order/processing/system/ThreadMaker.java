@@ -8,6 +8,7 @@ import java.util.logging.Logger;
 public class ThreadMaker extends Thread 
 {
     //AuthenticationCntl authCntl;
+    InteractionCntl intCntl;
     CustomerListCntl CLC;
     InventoryListCntl ILC;
     OrderListCntl OLC;
@@ -15,8 +16,9 @@ public class ThreadMaker extends Thread
     int customerID;
     SecureRandom rn = new SecureRandom();
     
-    ThreadMaker(CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC, int inputCustomerID)
+    ThreadMaker(InteractionCntl theIntCntl, CustomerListCntl theCLC, InventoryListCntl theILC, OrderListCntl theOLC, TransferListCntl theTLC, int inputCustomerID)
     {
+        intCntl = theIntCntl;
         CLC = theCLC;
         ILC = theILC;
         OLC = theOLC;
@@ -26,7 +28,7 @@ public class ThreadMaker extends Thread
     
     public void run() 
     {
-       ILC.showInventoryUI(customerID);
+       intCntl.showInteractionUI(customerID);
         
         /*
         synchronized(ILC.getIL().get(invID))

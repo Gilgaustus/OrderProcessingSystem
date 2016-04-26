@@ -8,7 +8,7 @@ public class InventoryListCntl extends Transaction
 {
     //so long as we implmeent the correct controls in inventory listcntl I see no reason to extend it to inventory.
     int ID = 0;
-    InventoryTableModel inventoryTable;
+    
     InventoryList IL = new InventoryList();
     ConnectionCntl CNC;
     Scanner in = new Scanner(System.in);
@@ -16,7 +16,6 @@ public class InventoryListCntl extends Transaction
     public InventoryListCntl(ConnectionCntl inputCNC)
     {
         CNC = inputCNC;
-        inventoryTable = new InventoryTableModel(this);
     }
    
     public void addItem(Inventory newItem)
@@ -46,12 +45,6 @@ public class InventoryListCntl extends Transaction
             System.out.println("No item to delete");
         }
             
-    }
-    
-    public void showInventoryUI(int customerID)
-    {
-        InventoryUI invUI = new InventoryUI(this, customerID);
-        invUI.setVisible(true);
     }
     
     //getters
@@ -96,10 +89,7 @@ public class InventoryListCntl extends Transaction
         return this.getIL().get(index).quantity;
     }
     
-    public InventoryTableModel getInventoryTableModel()
-    {
-        return inventoryTable;
-    }
+    
     
   
     //setters

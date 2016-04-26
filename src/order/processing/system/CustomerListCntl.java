@@ -12,6 +12,7 @@ public class CustomerListCntl
     SecureRandom rn;
     protected InventoryListCntl ILC;
     protected ConnectionCntl CNC;
+    CartTableModel CTM;
     
     public CustomerListCntl(ConnectionCntl inputCNC, InventoryListCntl inputILC)
     {
@@ -99,7 +100,9 @@ public class CustomerListCntl
         else
             System.out.println("No items in cart.");
     }
-   
+    
+    
+    
     public void testCL()
     {
         char[] pass1 = new char[1];
@@ -123,8 +126,14 @@ public class CustomerListCntl
         }
     }
     
-    //getters
+    public void showCartUI(int customerID)
+    {
+        CTM = new CartTableModel(this, customerID);
+        CartUI cartUI = new CartUI(this, CTM, customerID);
+        cartUI.setVisible(true);
+    }
     
+    //getters
     public ArrayList<Customer> getCustomerList()
     {
         return theCustomerList.CustomerList;

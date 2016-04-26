@@ -12,12 +12,14 @@ public class InteractionCntl extends Thread
     CustomerListCntl CLC = new CustomerListCntl(CNC, ILC);
     OrderListCntl OLC = new OrderListCntl(CNC, CLC, ILC);
     TransferListCntl TLC = new TransferListCntl(CNC, CLC, ILC, OLC);
+    InteractionTableModel inventoryTable;
     Scanner in = new Scanner(System.in);   
     
     public InteractionCntl() throws SQLException
     {
         CLC.testCL();
         ILC.initInvList();
+        inventoryTable = new InteractionTableModel(ILC);
     }
     
     public void welcomeProtocol() throws SQLException
@@ -230,10 +232,31 @@ public class InteractionCntl extends Thread
         }
     
     }
-
-    public InventoryListCntl getILC()
+    
+    public void showInteractionUI(int customerID)
     {
-        return ILC;
+        InteractionUI invUI = new InteractionUI(this, customerID);
+        invUI.setVisible(true);
+    }
+    
+    public InteractionTableModel getInteractionTableModel()
+    {
+        return inventoryTable;
+    }
+    
+    public Inventory getInventoryItem(int inventoryID)
+    {
+        return this.getInteractionTableModel().getItem(inventoryID);
+    }
+    
+    public void showCustomerCartUI(int customerID)
+    {
+        CLC.showCartUI(customerID);
+    }
+    
+    public void addToCart(int customerID, int itemID) throws SQLException
+    {
+        CLC.addToCustomerCart(customerID, itemID);
     }
     
     public void run()
@@ -243,11 +266,11 @@ public class InteractionCntl extends Thread
             int theThreads = 5;
             
             Thread[] threadMaker = new ThreadMaker[theThreads];
-            threadMaker[0] = new ThreadMaker(CLC, ILC, OLC, TLC, 0);
-            threadMaker[1] = new ThreadMaker(CLC, ILC, OLC, TLC, 1);
-            threadMaker[2] = new ThreadMaker(CLC, ILC, OLC, TLC, 2);
-            threadMaker[3] = new ThreadMaker(CLC, ILC, OLC, TLC, 3);
-            threadMaker[4] = new ThreadMaker(CLC, ILC, OLC, TLC, 4);
+            threadMaker[0] = new ThreadMaker(this, CLC, ILC, OLC, TLC, 0);
+            threadMaker[1] = new ThreadMaker(this, CLC, ILC, OLC, TLC, 1);
+            threadMaker[2] = new ThreadMaker(this, CLC, ILC, OLC, TLC, 2);
+            threadMaker[3] = new ThreadMaker(this, CLC, ILC, OLC, TLC, 3);
+            threadMaker[4] = new ThreadMaker(this, CLC, ILC, OLC, TLC, 4);
             
             for (int i = 0; i < threadMaker.length; i++) 
             {
