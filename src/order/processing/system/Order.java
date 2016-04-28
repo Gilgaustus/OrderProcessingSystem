@@ -2,8 +2,8 @@ package order.processing.system;
 
 public class Order
 {
-    CustomerListCntl parentCLC;
-    InventoryListCntl parentILC;
+    CustomerListCntl CLC;
+    InventoryListCntl ILC;
     //for now cust is just hard-coded to 0
     Cart InventoryItemOrder;
     double shippingPrice;
@@ -15,11 +15,9 @@ public class Order
     
     public Order(CustomerListCntl theCLC, InventoryListCntl theILC)
     {
-        parentCLC = theCLC;
-        parentILC = theILC;
-        InventoryItemOrder = parentCLC.getCustomerCart(0);
-        shippingAddress = parentCLC.getCustomerShipingAddress(0);
-        billingAddress = parentCLC.getCustomerBillingAddress(0);
+        CLC = theCLC;
+        ILC = theILC;
+        InventoryItemOrder = new Cart(ILC);
     }
     
     public void setOrderID(int newOrderID)
@@ -46,7 +44,11 @@ public class Order
    public void setBillingAddr(String input)
    {
         billingAddress = input;
-       
+   }
+   
+   public void setTotalPrice(double newTotalPrice)
+   {
+       totalPrice = newTotalPrice;
    }
     
    public int getOrderID()
@@ -59,6 +61,11 @@ public class Order
        return orderCustomerID;
    }
    
+   public double getTotalPrice()
+   {
+       return totalPrice;
+   }
+   
    public String getBillingAddress()
    {
         return billingAddress;
@@ -67,7 +74,6 @@ public class Order
     public void setShippingAddr(String input)
     {
         shippingAddress = input;
-       
     }
     
     public String getShippingAddress()

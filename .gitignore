@@ -53,3 +53,14 @@ build/classes/order/processing/system/InteractionUI$3.class
 build/classes/order/processing/system/InteractionUI$4.class
 build/classes/order/processing/system/InteractionUI$5.class
 build/classes/order/processing/system/InteractionUI$6.class
+build/classes/order/processing/system/OrderDetailTableModel.class
+build/classes/order/processing/system/OrderDetailUI$1.class
+build/classes/order/processing/system/OrderDetailUI.class
+build/classes/order/processing/system/OrderDetailUI.form
+build/classes/order/processing/system/OrderTableModel.class
+build/classes/order/processing/system/OrderUI$1.class
+build/classes/order/processing/system/OrderUI$2.class
+build/classes/order/processing/system/OrderUI.class
+build/classes/order/processing/system/OrderUI.form
+src/order/processing/system/OrderDetailUI.form
+src/order/processing/system/OrderUI.form

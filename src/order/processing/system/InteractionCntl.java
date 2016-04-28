@@ -254,6 +254,11 @@ public class InteractionCntl extends Thread
         CLC.showCartUI(customerID);
     }
     
+    public void showCustomerOrderUI(int customerID)
+    {
+        OLC.showOrderUI(customerID);
+    }
+    
     public void addToCart(int customerID, int itemID) throws SQLException
     {
         CLC.addToCustomerCart(customerID, itemID);

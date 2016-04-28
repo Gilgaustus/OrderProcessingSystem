@@ -143,9 +143,9 @@ public class InteractionUI extends javax.swing.JFrame
                         .addComponent(transferButton))
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(viewCartButton)
-                        .addGap(107, 107, 107)
-                        .addComponent(orderButton)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addComponent(orderButton)
+                        .addGap(101, 101, 101)
                         .addComponent(addToCartButton))
                     .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
@@ -211,7 +211,7 @@ public class InteractionUI extends javax.swing.JFrame
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void viewOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOrderButtonActionPerformed
-        
+        intCntl.showCustomerOrderUI(customerID);
     }//GEN-LAST:event_viewOrderButtonActionPerformed
 
     /**

@@ -1,6 +1,7 @@
 package order.processing.system;
 
 import java.sql.SQLException;
+import java.util.ArrayList;
 
 public class Customer 
 {
@@ -13,8 +14,6 @@ public class Customer
     protected char[] password;
     protected char[] creditCard;
     protected Cart theCart;
-    protected int[] ordersPlaced; //array of Order IDs of orders customer has placed
-    protected int ordersSize = 0;
     protected InventoryListCntl ILC;
     
     public Customer(InventoryListCntl inputILC)
@@ -77,11 +76,6 @@ public class Customer
     public Cart getCart()
     {
         return theCart;
-    }
-    
-    public int[] getOrdersPlaced()
-    {
-        return ordersPlaced;
     }
     
     //setters

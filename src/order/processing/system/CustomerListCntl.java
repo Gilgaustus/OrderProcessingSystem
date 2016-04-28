@@ -68,11 +68,11 @@ public class CustomerListCntl
     
     public void removeFromCustomerCart(int customerIndex, int itemID) throws SQLException
     {
-        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID-1).getName());
-        synchronized(ILC.getIL().get(itemID-1))
+        System.out.println(Thread.currentThread().getName() + " " + this.getCustomerList().get(customerIndex).getFirstName() + " removing Item " + ILC.getIL().get(itemID).getName());
+        synchronized(ILC.getIL().get(itemID))
         {
             int index;
-            int quantity = ILC.getIL().get(itemID-1).getQuantity();
+            int quantity = ILC.getIL().get(itemID).getQuantity();
             boolean changeInCart = false;
             double subtotal = this.getCustomerCart(customerIndex).getSubtotal();
             if (this.getCustomerCart(customerIndex).getCartList().size() > 0)
@@ -81,7 +81,7 @@ public class CustomerListCntl
                 {
                     if (itemID == this.getCustomerCart(customerIndex).getCartList().get(i).getID())
                     {
-                        index = this.getCustomerCart(customerIndex).getCartList().get(i).getID()-1;
+                        index = this.getCustomerCart(customerIndex).getCartList().get(i).getID();
                         this.getCustomerCart(customerIndex).getCartList().remove(i);
                         changeInCart = true;
                         quantity++;

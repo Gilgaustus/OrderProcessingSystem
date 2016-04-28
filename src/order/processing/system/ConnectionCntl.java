@@ -113,7 +113,7 @@ public class ConnectionCntl
     {
         Connection conn = ConnectionToMySql();
         Statement stmt = conn.createStatement();
-        ResultSet rs = stmt.executeQuery("SELECT * FROM order");
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Orders");
         while (rs.next()) 
         {
             Order newOrder = new Order(inputCLC, inputILC);
@@ -142,11 +142,74 @@ public class ConnectionCntl
     
         for(int i = 0; i < inputOrder.getCart().getCartList().size(); i++)
         {
-            String sql = "INSERT INTO `Orders`(`PK_OrderID`, `FK_InventoryID`, `FK_CustomerID`, `ShippingAddress`, `BillingAddress`) VALUES (" + inputOrder.getOrderID() + "," + inputOrder.getCart().getCartList().get(i).getID()+","+ inputOrder.getCustomerID() + ",'" + inputOrder.getShippingAddress() + "','" + inputOrder.getBillingAddress() +"'"+ " ) ";
+            String sql = "INSERT INTO `Orders`(`PK_OrderID`, `FK_InventoryID`, `FK_CustomerID`, `ShippingAddress`, `BillingAddress`, `Price`) VALUES (" + inputOrder.getOrderID() + "," + inputOrder.getCart().getCartList().get(i).getID() + "," + inputOrder.getCustomerID() + ",'" + inputOrder.getShippingAddress() + "','" + inputOrder.getBillingAddress() +"',"+ inputOrder.getTotalPrice() + " ) ";
             System.out.println("SQL: "+ sql);
             PreparedStatement pstmt = conn.prepareStatement(sql);
             pstmt.executeUpdate();
         }
+        conn.close();
+    }
+    
+    public static void GetCustomerOrderData(CustomerListCntl inputCLC, InventoryListCntl inputILC, ArrayList<Order> customerOrderList, int customerID) throws SQLException
+    {
+        Connection conn = ConnectionToMySql();
+        Statement stmt = conn.createStatement();
+        ResultSet rs = stmt.executeQuery("SELECT * FROM Orders WHERE FK_CustomerID = " + customerID);
+        Order newOrder = new Order(inputCLC, inputILC);
+        int temp = -1;
+        while (rs.next()) 
+        {
+            int orderID = rs.getInt("PK_OrderID");
+            
+            if (temp == -1)
+            {
+                temp = orderID;
+                int invID  = rs.getInt("FK_InventoryID");
+                String shippingAddress = rs.getString("ShippingAddress");
+                String billingAddress = rs.getString("BillingAddress");
+                double cost = rs.getDouble("Price");
+            
+                newOrder.setOrderID(orderID);
+                newOrder.setCustomerID(customerID);
+                //should dynamically update to customer but for now we are  doing this
+                newOrder.setShippingAddr(shippingAddress);
+                newOrder.setBillingAddr(billingAddress);
+                newOrder.setTotalPrice(cost);
+                newOrder.getCart().getCartList().add(inputILC.getItem(invID));
+            } else if (temp == orderID) {
+                System.out.println("else if");
+                int invID  = rs.getInt("FK_InventoryID");
+                String shippingAddress = rs.getString("ShippingAddress");
+                String billingAddress = rs.getString("BillingAddress");
+                double cost = rs.getDouble("Price");
+            
+                newOrder.setOrderID(orderID);
+                newOrder.setCustomerID(customerID);
+                //should dynamically update to customer but for now we are  doing this
+                newOrder.setShippingAddr(shippingAddress);
+                newOrder.setBillingAddr(billingAddress);
+                newOrder.setTotalPrice(cost);
+                newOrder.getCart().getCartList().add(inputILC.getItem(invID));
+            } else {
+                System.out.println("else");
+                customerOrderList.add(newOrder);
+                newOrder = new Order(inputCLC, inputILC);
+                int invID  = rs.getInt("FK_InventoryID");
+                String shippingAddress = rs.getString("ShippingAddress");
+                String billingAddress = rs.getString("BillingAddress");
+                double cost = rs.getDouble("Price");
+            
+                newOrder.setOrderID(orderID);
+                newOrder.setCustomerID(customerID);
+                //should dynamically update to customer but for now we are  doing this
+                newOrder.setShippingAddr(shippingAddress);
+                newOrder.setBillingAddr(billingAddress);
+                newOrder.setTotalPrice(cost);
+                newOrder.getCart().getCartList().add(inputILC.getItem(invID));
+                temp = orderID;
+            }
+        }
+        customerOrderList.add(newOrder);
         conn.close();
     }
     

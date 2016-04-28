@@ -21,7 +21,6 @@ public class OrderListCntl
     
     public synchronized void createOrder(CustomerListCntl inputCLC, InventoryListCntl inputILC, int customerID, Cart inputCart, double inputPrice) throws ClassNotFoundException, SQLException    
     {
-        
         System.out.println(Thread.currentThread().getName() + "created Order");
         Order O = new Order(inputCLC, inputILC);
         
@@ -48,6 +47,12 @@ public class OrderListCntl
         CLC.getCustomerCart(customerID).getCartList().clear();
     }
     
+    public void showOrderUI(int customerID) throws SQLException
+    {
+        OrderUI orderUI = new OrderUI(this, customerID);
+        orderUI.setVisible(true);
+    }
+    
     public ArrayList<Order> getOrderList()
     {
         return OL.orderList;
@@ -57,6 +62,11 @@ public class OrderListCntl
     public Order getOrder(int index)
     {
         return this.getOrderList().get(index);
+    }
+    
+    public void getCustomerOrders(ArrayList<Order> customerOrders, int customerID) throws SQLException
+    {
+        CNC.GetCustomerOrderData(CLC, ILC, customerOrders, customerID);
     }
     
     public void showCustomerOrder(int customerID)
