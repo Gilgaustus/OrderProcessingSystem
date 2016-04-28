@@ -218,7 +218,7 @@ public class ConnectionCntl
         Connection conn = ConnectionToMySql();
         conn.setReadOnly(false);
   
-        String sql = "INSERT INTO `transfer`(`PK_TransferID`,`FK_OrderID`, `FK_CustomerID`) VALUES ("+inputTransferListCntl.getTransferList().indexOf(inputTransfer)+","+inputTransfer.getReferencedOrderID()+","+inputTransfer.getTransferCustomerID()+")";
+        String sql = "INSERT INTO `transfer`(`PK_TransferID`,`FK_OrderID`, `FK_CustomerID`, `FK_ReturnInventoryID`, `FK_GetInventoryID`) VALUES ("+inputTransferListCntl.getTransferList().indexOf(inputTransfer)+","+inputTransfer.getTransferCustomerID()+","+inputTransfer.getReferencedOrderID()+","+ inputTransfer.getItemReturned().getID()+","+inputTransfer.getItemToGet().getID() + ")";
         System.out.println("SQL: "+ sql);
         PreparedStatement pstmt = conn.prepareStatement(sql);
         pstmt.executeUpdate();

@@ -31,9 +31,11 @@ public class OrderListCntl
         O.setShippingPrice(inputPrice);
         O.setCart(inputCart);
         O.getCart().printContents();
+        this.getOrderList().add(O);
+        System.out.println(this.getOrderList().size());
+        System.out.println(this.getOrderList().get(orderID).getCart().getCartList().size());
         this.process();
         
-        this.getOrderList().add(O);
         //buy return exchange
         if(O.getCart().getCartList().size() != 0)
         {
@@ -44,10 +46,10 @@ public class OrderListCntl
         {
             System.out.println(Thread.currentThread() + "'s cart is empty");
         }
-        CLC.getCustomerCart(customerID).getCartList().clear();
+        System.out.println(this.getOrderList().get(orderID-1).getCart().getCartList().size());
     }
     
-    public void showOrderUI(int customerID) throws SQLException
+    public void showOrderUI(int customerID,  boolean performTransfer) throws SQLException
     {
         OrderUI orderUI = new OrderUI(this, customerID);
         orderUI.setVisible(true);

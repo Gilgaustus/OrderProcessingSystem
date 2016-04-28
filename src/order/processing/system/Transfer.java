@@ -13,12 +13,11 @@ public class Transfer extends Transaction
     CustomerListCntl CLC;
     
     
-    public Transfer(Inventory newInvToReturn, Inventory newInvToGet, InventoryListCntl inputILC, CustomerListCntl inputCLC)
+    public Transfer(int inputTransferID, Inventory newInvToReturn, Inventory newInvToGet)
     {
+        transferID = inputTransferID;
         invToReturn = newInvToReturn;
         invToGet = newInvToGet;
-        //ILC = inputILC;
-        //CLC = inputCLC;
     }
     
     public void setTransferID(int newTransferID)

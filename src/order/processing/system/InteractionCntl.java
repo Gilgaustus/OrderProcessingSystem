@@ -254,9 +254,14 @@ public class InteractionCntl extends Thread
         CLC.showCartUI(customerID);
     }
     
-    public void showCustomerOrderUI(int customerID)
+    public void showCustomerOrderUI(int customerID, boolean performTransfer) throws SQLException
     {
-        OLC.showOrderUI(customerID);
+        OLC.showOrderUI(customerID, performTransfer);
+    }
+    
+    public void performTransfer(int customerID, int desiredItem) throws SQLException
+    {
+        TLC.performTransfer(customerID, desiredItem);
     }
     
     public void addToCart(int customerID, int itemID) throws SQLException
@@ -267,6 +272,7 @@ public class InteractionCntl extends Thread
     public void placeOrder(int customerID) throws ClassNotFoundException, SQLException
     {
         OLC.createOrder(CLC, ILC, customerID, CLC.getCustomerCart(customerID), 2.0);
+        CLC.customerOrderPlaced(customerID);
     }
     
     public void run()

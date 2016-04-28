@@ -183,7 +183,13 @@ public class InteractionUI extends javax.swing.JFrame
     }//GEN-LAST:event_viewCartButtonActionPerformed
 
     private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
-        // TODO add your handling code here:
+        int selectedTableRow = inventoryTable.getSelectedRow();
+        int selectedModelRow = inventoryTable.convertRowIndexToModel(selectedTableRow);
+        try {
+            intCntl.performTransfer(customerID, selectedModelRow);
+        } catch (SQLException ex) {
+            Logger.getLogger(InteractionUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_transferButtonActionPerformed
 
     private void addToCartButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_addToCartButtonActionPerformed
@@ -211,7 +217,11 @@ public class InteractionUI extends javax.swing.JFrame
     }//GEN-LAST:event_closeButtonActionPerformed
 
     private void viewOrderButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_viewOrderButtonActionPerformed
-        intCntl.showCustomerOrderUI(customerID);
+        try {
+            intCntl.showCustomerOrderUI(customerID, false);
+        } catch (SQLException ex) {
+            Logger.getLogger(InteractionUI.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }//GEN-LAST:event_viewOrderButtonActionPerformed
 
     /**

@@ -6,14 +6,31 @@ import java.util.ArrayList;
 public class OrderUI extends javax.swing.JFrame {
 
     private OrderListCntl OLC;
+    private TransferListCntl TLC;
     private OrderTableModel OTM;
     ArrayList<Order> customerOrderData = new ArrayList<>();
     private int customerID;
+    private int selectedItem;
+    private boolean performingTransfer;
     
     public OrderUI(OrderListCntl inputOLC, int inputCustomerID) throws SQLException 
     {
         OLC = inputOLC;
         customerID = inputCustomerID;
+        OLC.getCustomerOrders(customerOrderData, customerID);
+        OTM = new OrderTableModel(customerOrderData);
+        performingTransfer = false;
+        selectedItem = -1;
+        initComponents();
+    }
+    
+    public OrderUI(TransferListCntl inputTLC, OrderListCntl inputOLC, int inputCustomerID, int inputSelectedItem) throws SQLException
+    {
+        TLC = inputTLC;
+        OLC = inputOLC;
+        customerID = inputCustomerID;
+        selectedItem = inputSelectedItem;
+        performingTransfer = true;
         OLC.getCustomerOrders(customerOrderData, customerID);
         OTM = new OrderTableModel(customerOrderData);
         initComponents();
@@ -85,7 +102,7 @@ public class OrderUI extends javax.swing.JFrame {
     private void orderDetailButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_orderDetailButtonActionPerformed
         int selectedTableRow = orderTable.getSelectedRow();
         int selectedModelRow = orderTable.convertRowIndexToModel(selectedTableRow);
-        OrderDetailUI orderDetailUI = new OrderDetailUI(customerOrderData.get(selectedModelRow).getCart().getCartList());
+        OrderDetailUI orderDetailUI = new OrderDetailUI(TLC, customerOrderData.get(selectedModelRow).getOrderID(), selectedItem, customerOrderData.get(selectedModelRow).getCart().getCartList(), performingTransfer);
         orderDetailUI.setVisible(true);
     }//GEN-LAST:event_orderDetailButtonActionPerformed
 

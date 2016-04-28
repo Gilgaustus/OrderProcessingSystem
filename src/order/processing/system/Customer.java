@@ -32,6 +32,11 @@ public class Customer
         theCart.removeFromCart(cartItemID);
     }
     
+    public void orderPlaced ()
+    {
+        theCart = new Cart(ILC);
+    }
+    
     //getters
     public int getCustomerID()
     {

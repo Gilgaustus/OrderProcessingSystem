@@ -1,15 +1,28 @@
 package order.processing.system;
 
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class OrderDetailUI extends javax.swing.JFrame {
 
+    TransferListCntl TLC;
+    OrderListCntl OLC;
     private OrderDetailTableModel ODTM;
+    ArrayList<Inventory> cart;
+    private int orderID;
+    private int desiredItem;
     
-    public OrderDetailUI(ArrayList<Inventory> inputCart) 
+    public OrderDetailUI(TransferListCntl inputTLC, int inputOrderID, int inputDesiredItem, ArrayList<Inventory> inputCart, boolean performTransfer)
     {
-        ODTM = new OrderDetailTableModel(inputCart);
+        TLC = inputTLC;
+        cart = inputCart;
+        ODTM = new OrderDetailTableModel(cart);
+        orderID = inputOrderID;
+        desiredItem = inputDesiredItem;
         initComponents();
+        transferButton.setVisible(performTransfer);
     }
 
     /**
@@ -24,6 +37,7 @@ public class OrderDetailUI extends javax.swing.JFrame {
         jScrollPane1 = new javax.swing.JScrollPane();
         orderDetailTable = new javax.swing.JTable();
         closeButton = new javax.swing.JButton();
+        transferButton = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -37,6 +51,13 @@ public class OrderDetailUI extends javax.swing.JFrame {
             }
         });
 
+        transferButton.setText("Perform Transfer");
+        transferButton.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                transferButtonActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -46,18 +67,22 @@ public class OrderDetailUI extends javax.swing.JFrame {
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 454, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(60, 60, 60))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addComponent(closeButton, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(230, 230, 230))))
+                        .addGap(14, 14, 14))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                        .addComponent(transferButton)
+                        .addGap(199, 199, 199))))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(closeButton)
+                    .addComponent(jScrollPane1, javax.swing.GroupLayout.PREFERRED_SIZE, 264, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(18, 18, 18)
-                .addComponent(closeButton)
+                .addComponent(transferButton)
                 .addContainerGap(13, Short.MAX_VALUE))
         );
 
@@ -68,10 +93,25 @@ public class OrderDetailUI extends javax.swing.JFrame {
         this.dispose();
     }//GEN-LAST:event_closeButtonActionPerformed
 
+    private void transferButtonActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_transferButtonActionPerformed
+        int selectedTableRow = orderDetailTable.getSelectedRow();
+        int selectedModelRow = orderDetailTable.convertRowIndexToModel(selectedTableRow);
+        try {
+            TLC.createTransfer(orderID, selectedModelRow, desiredItem);
+        } catch (SQLException ex) {
+            Logger.getLogger(OrderDetailUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("SQL Exception");
+        } catch (ClassNotFoundException ex) {
+            Logger.getLogger(OrderDetailUI.class.getName()).log(Level.SEVERE, null, ex);
+            System.out.println("ClassNotFound");
+        }
+    }//GEN-LAST:event_transferButtonActionPerformed
+
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton closeButton;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable orderDetailTable;
+    private javax.swing.JButton transferButton;
     // End of variables declaration//GEN-END:variables
 }

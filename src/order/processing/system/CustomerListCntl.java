@@ -101,7 +101,10 @@ public class CustomerListCntl
         }
     }
     
-    
+    public void customerOrderPlaced(int inputCustomerID)
+    {
+        this.getCustomerList().get(inputCustomerID).orderPlaced();
+    }
     
     public void testCL()
     {
